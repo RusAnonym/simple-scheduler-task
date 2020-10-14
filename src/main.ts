@@ -7,8 +7,12 @@ import * as core from "./plugins/core";
 	core.config.reservedType += await core.internal.getRandomTaskID();
 	await core.internal.addTaskToCheckCompletedTask();
 	await core.internal.startInterval();
-	core.logger.text(`Start in ${(start - performance.now()).toFixed(2)}ms`);
+	core.logger.text(`Start in ${(performance.now() - start).toFixed(2)}ms`);
 	return 0;
 })();
 
-export { core };
+let events = core.Events;
+let tasks = core.tasks;
+let settings = core.settings;
+
+export { events, tasks, settings };

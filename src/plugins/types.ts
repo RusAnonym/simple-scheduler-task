@@ -1,3 +1,16 @@
+import { EventEmitter } from "events";
+
+export interface SchedulerInputTask {
+	type: string;
+	params: any;
+	inform: boolean;
+	isInterval: boolean;
+	plannedTime?: number;
+	intervalTimer?: number;
+	intervalTriggers?: number;
+	code: Function;
+}
+
 export interface SchedulerTask {
 	plannedTime: number;
 	id: string;
@@ -25,17 +38,6 @@ export interface SchedulerParseTask {
 	source: Function;
 }
 
-export interface InputTask {
-	type: string;
-	params: any;
-	inform: boolean;
-	isInterval: boolean;
-	plannedTime?: number;
-	intervalTimer?: number;
-	intervalTriggers?: number;
-	code: Function;
-}
-
 export interface SchedulerConfig {
 	type: string;
 	work: boolean;
@@ -43,4 +45,34 @@ export interface SchedulerConfig {
 	intervalMS: number;
 	reservedType: string;
 	scheduledTasks: Array<SchedulerTask>;
+}
+
+export interface SchedulerInformLog {
+	task: SchedulerParseTask;
+	response: any;
+	executionTime: number;
+}
+
+export interface SchedulerErrorLog {
+	task: SchedulerParseTask;
+	error: Error;
+	executionTime: number;
+}
+
+export declare interface Logger {
+	on(event: "logs", listener: (data: string) => void): this;
+	on(event: "errors", listener: (data: SchedulerErrorLog) => void): this;
+	on(event: "executions", listener: (data: SchedulerInformLog) => void): this;
+}
+
+export class Logger extends EventEmitter {
+	emitText(data: string): void {
+		this.emit("logs", data);
+	}
+	emitError(data: SchedulerErrorLog): void {
+		this.emit("errors", data);
+	}
+	emitSuccess(data: SchedulerInformLog): void {
+		this.emit("success", data);
+	}
 }

@@ -1,23 +1,14 @@
 {
   "compilerOptions": {
-    "target": "ES2015",
-    "module": "ES2020",
-    "outDir": "./lib",
-    "esModuleInterop": true,
+    "target": "ES2019",
+    "module": "ESNext",
+    "outDir": "./lib/",
+    "moduleResolution": "Node",
+    "declaration": true,
     "strict": true,
+    "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
   "include": ["./src"]
 }
-
-// {
-//   "compilerOptions": {
-//     "target": "es5",
-//     "outDir": "./out/",
-//     "strict": true,
-//     "esModuleInterop": true,
-//     "skipLibCheck": true,
-//     "forceConsistentCasingInFileNames": true
-//   }
-// }

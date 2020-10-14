@@ -1,8 +1,8 @@
-import { InputTask, SchedulerTask } from "./types";
+import { SchedulerInputTask, SchedulerTask } from "./types";
 import { internal, config } from "./core";
 
 const tasks = {
-	add: async (taskData: InputTask) => {
+	add: async (taskData: SchedulerInputTask) => {
 		const currentTime: number = Number(new Date());
 		taskData.type = taskData.type || "missing";
 		taskData.params = taskData.params || {};

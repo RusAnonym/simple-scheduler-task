@@ -1,7 +1,14 @@
 import { performance } from "perf_hooks";
-import { logger } from "./logger";
+import { logger, Events } from "./logger";
 import { tasks } from "./tasks";
-import { SchedulerTask, SchedulerConfig, SchedulerParseTask } from "./types";
+import { settings } from "./settings";
+import {
+	SchedulerTask,
+	SchedulerConfig,
+	SchedulerParseTask,
+	SchedulerInformLog,
+	SchedulerErrorLog,
+} from "./types";
 
 const config: SchedulerConfig = {
 	type: `interval`,
@@ -71,24 +78,29 @@ const internal = {
 			let data: any = await task.service.source();
 			let endExecute: number = performance.now();
 			if (task.service.inform === true) {
-				let logData = {
+				let logData: SchedulerInformLog = {
 					task: await internal.parseTask(task),
 					response: data,
 					executionTime: endExecute - startExecute,
 				};
 				logger.success(logData);
 			}
-			logger.text(`Executed task #${task.id}`);
+			if (!task.params.service) {
+				logger.text(`Executed task #${task.id}`);
+			}
 		} catch (error) {
 			let endExecute: number = performance.now();
 			if (task.service.inform === true) {
-				logger.error({
+				let data: SchedulerErrorLog = {
 					task: await internal.parseTask(task),
 					error: error,
 					executionTime: endExecute - startExecute,
-				});
+				};
+				logger.error(data);
 			}
-			logger.text(`Error executed task #${task.id}`);
+			if (!task.params.service) {
+				logger.text(`Error executed task #${task.id}`);
+			}
 		}
 		return true;
 	},
@@ -184,4 +196,4 @@ const internal = {
 
 async function startSchedulerService() {}
 
-export { config, internal, tasks, logger };
+export { config, internal, tasks, logger, Events, settings };
