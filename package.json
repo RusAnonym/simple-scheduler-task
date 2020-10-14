@@ -12,6 +12,7 @@
 	},
 	"scripts": {
 		"tsc": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json",
+		"test": "yarn tsc && node test.js",
 		"prepublish": "npm run tsc"
 	},
 	"files": [
@@ -24,6 +25,7 @@
 		"@types/events": "^3.0.0",
 		"@types/node": "^14.11.8",
 		"events": "^3.2.0",
-		"perf_hooks": "^0.0.1"
+		"perf_hooks": "^0.0.1",
+		"tslib": "^2.0.3"
 	}
 }
