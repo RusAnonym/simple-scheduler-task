@@ -36,7 +36,25 @@ export interface SchedulerParseTask {
 	status: string;
 	inform: boolean;
 	isInterval: boolean;
-	source: Function;
+	source: Function;	
+}
+
+export interface SchedulerBackupTask {
+	plannedTime: number;
+	id: string;
+	type: string;
+	params: any;
+	status: string;
+	isInterval: boolean;
+	service: {
+		timeoutID: any;
+		create: number;
+		intervalTime: number;
+		inform: boolean;
+		triggeringQuantity: number;
+		remainingTriggers: number;
+		endlessInterval: boolean;
+	};
 }
 
 export interface SchedulerConfig {
@@ -44,6 +62,7 @@ export interface SchedulerConfig {
 	work: boolean;
 	interval: any;
 	intervalMS: number;
+	backupFolder: string;
 	reservedType: string;
 	scheduledTasks: Array<SchedulerTask>;
 }

@@ -3,6 +3,7 @@ import { performance } from "perf_hooks";
 import { logger, Events } from "./logger";
 import { tasks } from "./tasks";
 import { settings } from "./settings";
+import { backup } from "./backup";
 import {
 	SchedulerTask,
 	SchedulerConfig,
@@ -16,6 +17,7 @@ const config: SchedulerConfig = {
 	work: false,
 	interval: null,
 	intervalMS: 1000,
+	backupFolder: "/scheduler/",
 	reservedType: `scheduler_service_`,
 	scheduledTasks: [],
 };
@@ -222,8 +224,19 @@ const internal = {
 		config.scheduledTasks.push(tempTask);
 		return tempID;
 	},
+	addBackUpTask: async (taskData: SchedulerTask) => {
+		const currentTime: number = Number(new Date());
+		let tempTask: SchedulerTask = taskData;
+		if (config.type === `timeout`) {
+			tempTask.service.timeoutID = setTimeout(async () => {
+				internal;
+			}, tempTask.plannedTime - currentTime);
+		}
+		config.scheduledTasks.push(tempTask);
+		return tempTask.id;
+	},
 };
 
 async function startSchedulerService() {}
 
-export { config, internal, tasks, logger, Events, settings };
+export { config, internal, tasks, logger, Events, settings, backup };

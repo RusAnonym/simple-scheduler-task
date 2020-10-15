@@ -11,8 +11,9 @@ import * as core from "./plugins/core";
 	return 0;
 })();
 
-let events = core.Events;
 let tasks = core.tasks;
 let settings = core.settings;
+let events = core.Events;
+let backup = core.backup;
 
-export { events, tasks, settings };
+export { tasks, settings, events, backup };
