@@ -104,7 +104,7 @@ scheduler.tasks.add(taskData); // => Promise<String>
 | type             | String   | Тип задачи                                     | missing      |
 | params           | Object   | Параметры задачи                               | {}           |
 | inform           | Boolean  | Выводить ли в событиях информацию о задаче     | false        |
-| interval         | Boolean  | Выполнять ли задачу с определённым промежутком | false        |
+| isInterval       | Boolean  | Выполнять ли задачу с определённым промежутком | false        |
 | intervalTimer    | Boolean  | Промежуток выполнения интервала в ms           | null         |
 | intervalTriggers | Number   | Количество срабатываний интервала              | null         |
 | intervalTriggers | Function | Функция которую должна выполнить задача        | null         |
@@ -133,7 +133,7 @@ scheduler.tasks.add({
     "type": "missing",
     "params": {},
     "status": "executed",
-    "interval": false,
+    "isInterval": false,
     "source": // Function
   },
   "response": 5,
@@ -229,16 +229,16 @@ scheduler.backup.load(); // Promise<Boolean>
 
 ## Структура задачи
 
-| Параметр | Тип      | Описание                                       |
-| -------- | -------- | ---------------------------------------------- |
-| id       | String   | Идентификатор задачи                           |
-| type     | String   | Тип задачи                                     |
-| params   | Object   | Параметры задачи                               |
-| status   | String   | Статус выполнения задачи                       |
-| interval | Boolean  | Выполнять ли задачу с определённым промежутком |
-| source   | Function | Функция которая должна выполниться             |
+| Параметр   | Тип      | Описание                                       |
+| ---------- | -------- | ---------------------------------------------- |
+| id         | String   | Идентификатор задачи                           |
+| type       | String   | Тип задачи                                     |
+| params     | Object   | Параметры задачи                               |
+| status     | String   | Статус выполнения задачи                       |
+| isInterval | Boolean  | Выполнять ли задачу с определённым промежутком |
+| source     | Function | Функция которая должна выполниться             |
 
-В случае если параметр interval равен true, возвращается дополнительное поле intervalData
+В случае если параметр isInterval равен true, возвращается дополнительное поле intervalData
 
 | Параметр           | Тип    | Описание                                     |
 | ------------------ | ------ | -------------------------------------------- |

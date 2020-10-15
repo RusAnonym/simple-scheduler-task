@@ -12,16 +12,16 @@ scheduler.events.on(`executions`, async (data) => {
 	console.log(data);
 });
 
-scheduler.events.on(``)(async function () {
-	let plannedTime = new Date(Number(new Date()) + 2000);
-	// await scheduler.tasks.add({
-	// 	plannedTime: plannedTime,
-	// 	isInterval: true,
-	// 	intervalTimer: 1000,
-	// 	code: async function () {
-	// 		console.log(`Hello!!!`);
-	// 		return "test ${new Date()}";
-	// 	},
-	// });
-	scheduler.backup.run
+(async function () {
+	console.log(
+		await scheduler.tasks.add({
+			inform: true,
+			isInterval: true,
+			intervalTimer: 3600000,
+			code: async function () {
+				console.log(`Test ${new Date()}`);
+			},
+		}),
+	);
+	console.log(await scheduler.tasks.getAll());
 })();
