@@ -134,7 +134,7 @@ scheduler.tasks.add({
     "params": {},
     "status": "executed",
     "interval": false,
-    "source": [AsyncFunction: code]
+    "source": // Function
   },
   "response": 5,
   "executionTime": 0.9672999978065491
@@ -151,12 +151,12 @@ scheduler.tasks.get(taskID); // Promise<Object>
 
 Возвращает задачу в [формате](#Структура-задачи)
 
-### getTasks
+### getAll
 
 Получает все запланированные задачи
 
 ```js
-scheduler.tasks.getTasks(); // Promise<Array>
+scheduler.tasks.getAll(); // Promise<Array>
 ```
 
 Возвращает массив с задачами в [формате](#Структура-задачи)
@@ -171,7 +171,7 @@ scheduler.tasks.delete(taskID); // Promise<Boolean>
 
 Возвращает true при успешном удалении задачи
 
-## Setting
+## settings
 
 Класс для работы с настройками
 
@@ -189,17 +189,43 @@ scheduler.settings.setMode("timeout"); // Promise<Boolean>
 
 Возвращает true при успешной смене режима работы
 
-### editCheckTasks
+### editCheck
 
 Изменяет переодичность проверки задач интервалом
 
 ```js
-scheduler.settings.editCheckTasks(2000); // Promise<Boolean>
+scheduler.settings.editCheck(2000); // Promise<Boolean>
 ```
 
 Приведённый код устанавливает проверку задач каждые 2 секунды
 
 Возвращает true при успешном изменении интервала
+
+## backup
+
+### init
+
+Проверяет наличие папки для бэкапа задач, и если она отсуствует создаёт её.
+
+```js
+scheduler.backup.init(); // Promise<Boolean>
+```
+
+### run
+
+Сохраняет все задачи
+
+```js
+scheduler.backup.run(); // Promise<Boolean>
+```
+
+### load
+
+Загружает сохранённые задачи
+
+```js
+scheduler.backup.load(); // Promise<Boolean>
+```
 
 ## Структура задачи
 
@@ -212,7 +238,7 @@ scheduler.settings.editCheckTasks(2000); // Promise<Boolean>
 | interval | Boolean  | Выполнять ли задачу с определённым промежутком |
 | source   | Function | Функция которая должна выполниться             |
 
-В случае если параметр interval равен true, возвращется дополнительное поле intervalData
+В случае если параметр interval равен true, возвращается дополнительное поле intervalData
 
 | Параметр           | Тип    | Описание                                     |
 | ------------------ | ------ | -------------------------------------------- |

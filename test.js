@@ -12,7 +12,7 @@ scheduler.events.on(`executions`, async (data) => {
 	console.log(data);
 });
 
-(async function () {
+scheduler.events.on(``)(async function () {
 	let plannedTime = new Date(Number(new Date()) + 2000);
 	// await scheduler.tasks.add({
 	// 	plannedTime: plannedTime,
@@ -23,5 +23,5 @@ scheduler.events.on(`executions`, async (data) => {
 	// 		return "test ${new Date()}";
 	// 	},
 	// });
-	await scheduler.backup.load();
+	scheduler.backup.run
 })();

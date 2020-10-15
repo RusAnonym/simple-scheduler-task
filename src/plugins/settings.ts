@@ -28,7 +28,7 @@ const settings = {
 			}
 		}
 	},
-	editCheckInterval: async (newInterval: number): Promise<true> => {
+	editCheck: async (newInterval: number): Promise<true> => {
 		if (
 			!Number(newInterval) ||
 			Number(newInterval) < 1 ||
