@@ -17,7 +17,11 @@ const config: SchedulerConfig = {
 	work: false,
 	interval: null,
 	intervalMS: 1000,
-	backupFolder: "/scheduler/",
+	backup: {
+		folder: "/scheduler/",
+		interval: 30 * 60 * 1000,
+		auto: false,
+	},
 	reservedType: `scheduler_service_`,
 	scheduledTasks: [],
 };

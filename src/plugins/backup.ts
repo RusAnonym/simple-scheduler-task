@@ -7,7 +7,7 @@ const backup = {
 	run: async (): Promise<boolean> => {
 		try {
 			let mainDIR = require.main?.path;
-			let backupDIR = mainDIR + config.backupFolder;
+			let backupDIR = mainDIR + config.backup.folder;
 			for (let i in config.scheduledTasks) {
 				let tempTask: SchedulerTask = config.scheduledTasks[i];
 				if (tempTask.type !== config.reservedType && !tempTask.params.service) {
@@ -50,7 +50,7 @@ const backup = {
 	load: async (): Promise<boolean> => {
 		try {
 			let mainDIR = require.main?.path;
-			let backupDIR = mainDIR + config.backupFolder;
+			let backupDIR = mainDIR + config.backup.folder;
 			let tasksInDIR = fs
 				.readdirSync(backupDIR)
 				.filter((x) => path.extname(x) === `.json`);
@@ -95,7 +95,7 @@ const backup = {
 	init: async (): Promise<boolean> => {
 		try {
 			let mainDIR = require.main?.path;
-			let backupDIR = mainDIR + config.backupFolder;
+			let backupDIR = mainDIR + config.backup.folder;
 			let checkDir = fs.existsSync(backupDIR);
 			if (!checkDir) {
 				fs.mkdirSync(backupDIR);
@@ -105,17 +105,17 @@ const backup = {
 			return false;
 		}
 	},
-	auto: {
-		setInterval: async (ms: number): Promise<true> => {
-			return true;
-		},
-		enable: async (): Promise<true> => {
-			return true;
-		},
-		disable: async (): Promise<true> => {
-			return true;
-		},
-	},
+	// auto: {
+	// 	setInterval: async (ms: number): Promise<true> => {
+	// 		return true;
+	// 	},
+	// 	enable: async (): Promise<true> => {
+	// 		return true;
+	// 	},
+	// 	disable: async (): Promise<true> => {
+	// 		return true;
+	// 	},
+	// },
 };
 
 export { backup };

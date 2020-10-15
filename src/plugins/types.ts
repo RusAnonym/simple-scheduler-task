@@ -36,7 +36,7 @@ export interface SchedulerParseTask {
 	status: string;
 	inform: boolean;
 	isInterval: boolean;
-	source: Function;	
+	source: Function;
 }
 
 export interface SchedulerBackupTask {
@@ -62,7 +62,11 @@ export interface SchedulerConfig {
 	work: boolean;
 	interval: any;
 	intervalMS: number;
-	backupFolder: string;
+	backup: {
+		folder: string;
+		interval: number;
+		auto: boolean;
+	};
 	reservedType: string;
 	scheduledTasks: Array<SchedulerTask>;
 }
