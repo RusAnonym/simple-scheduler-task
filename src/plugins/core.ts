@@ -1,3 +1,4 @@
+import { SchedulerInputTask } from "./types";
 import { performance } from "perf_hooks";
 import { logger, Events } from "./logger";
 import { tasks } from "./tasks";
@@ -39,6 +40,7 @@ const internal = {
 			type: task.type,
 			params: task.params,
 			status: task.status,
+			inform: task.service.inform,
 			isInterval: task.isInterval,
 			source: task.service.source,
 		};
@@ -123,7 +125,7 @@ const internal = {
 	},
 	addTaskToCheckCompletedTask: async (): Promise<string> => {
 		logger.text(`Included verification of completed tasks`);
-		return await tasks.add({
+		return await internal.addTask({
 			type: config.reservedType,
 			params: {
 				description: `checkCompletedTasks`,
@@ -185,12 +187,40 @@ const internal = {
 			return true;
 		}
 		config.interval = setInterval(async () => {
-			const promises = await config.scheduledTasks.map(startTask);
+			const promises = config.scheduledTasks.map(startTask);
 			await Promise.all(promises);
 		}, config.intervalMS);
 		config.work = true;
 		logger.text(`Interval start`);
 		return true;
+	},
+	addTask: async (taskData: SchedulerInputTask) => {
+		const currentTime: number = Number(new Date());
+		const tempID: string = await internal.getRandomTaskID();
+		let tempTask: SchedulerTask = {
+			plannedTime: Number(taskData.plannedTime),
+			id: tempID,
+			type: taskData.type || "missing",
+			params: taskData.params || {},
+			status: `awaiting`,
+			isInterval: taskData.isInterval || false,
+			service: {
+				timeoutID: null,
+				create: currentTime,
+				intervalTime: taskData.intervalTimer || 0,
+				source: taskData.code,
+				inform: taskData.inform || false,
+				triggeringQuantity: 0,
+				remainingTriggers: taskData.intervalTriggers || 0,
+			},
+		};
+		if (config.type === `timeout`) {
+			tempTask.service.timeoutID = setTimeout(async () => {
+				internal;
+			}, tempTask.plannedTime - currentTime);
+		}
+		config.scheduledTasks.push(tempTask);
+		return tempID;
 	},
 };
 

@@ -1,9 +1,9 @@
 import { config, internal } from "./core";
 
 const settings = {
-	setMode: async (mode: string) => {
+	setMode: async (mode: "interval" | "timeout"): Promise<true> => {
 		if (
-			!String(mode) ||
+			typeof mode !== "string" ||
 			(mode.toLowerCase() !== `interval` && mode.toLowerCase() !== `timeout`)
 		) {
 			throw new Error(`Only 2 modes [interval, timeout]`);
@@ -28,8 +28,12 @@ const settings = {
 			}
 		}
 	},
-	editCheckInterval: async (newInterval: number) => {
-		if (!Number(newInterval) || Number(newInterval) < 1) {
+	editCheckInterval: async (newInterval: number): Promise<true> => {
+		if (
+			!Number(newInterval) ||
+			Number(newInterval) < 1 ||
+			Number(newInterval) === Infinity
+		) {
 			throw new Error(`Invalid interval`);
 		}
 		config.intervalMS = Number(newInterval);

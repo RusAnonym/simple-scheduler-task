@@ -1,6 +1,5 @@
 import { SchedulerErrorLog, SchedulerInformLog, Logger } from "./types";
 
-
 const Events = new Logger();
 
 const logger = {

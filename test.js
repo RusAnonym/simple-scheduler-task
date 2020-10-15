@@ -12,17 +12,19 @@ scheduler.events.on(`executions`, async (data) => {
 	console.log(data);
 });
 
-(async function () {
-	console.log(await scheduler.settings.editCheckInterval("s"));
+scheduler.settings.setMode(1);
 
-	let plannedTime = new Date(Number(new Date()) + 10000);
-	console.log();
+(async function () {
+	// console.log(await scheduler.settings.editCheckInterval("s"));
+
+	let plannedTime = new Date(Number(new Date()) + 2000);
 	await scheduler.tasks.add({
 		plannedTime: plannedTime,
 		inform: true,
 		code: async function () {
-			console.log(scheduler.core.config);
+			console.log(`test`);
 			return "response";
 		},
 	});
+	console.log(await scheduler.tasks.getTasks());
 })();

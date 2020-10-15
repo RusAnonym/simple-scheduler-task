@@ -1,11 +1,11 @@
 import { EventEmitter } from "events";
 
 export interface SchedulerInputTask {
-	type: string;
-	params: any;
-	inform: boolean;
-	isInterval: boolean;
-	plannedTime?: number;
+	type?: string;
+	params?: any;
+	inform?: boolean;
+	isInterval?: boolean;
+	plannedTime?: number | Date;
 	intervalTimer?: number;
 	intervalTriggers?: number;
 	code: Function;
@@ -34,6 +34,7 @@ export interface SchedulerParseTask {
 	type: string;
 	params: any;
 	status: string;
+	inform: boolean;
 	isInterval: boolean;
 	source: Function;
 }
@@ -73,6 +74,6 @@ export class Logger extends EventEmitter {
 		this.emit("errors", data);
 	}
 	emitSuccess(data: SchedulerInformLog): void {
-		this.emit("success", data);
+		this.emit("executions", data);
 	}
 }
