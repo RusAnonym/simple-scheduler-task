@@ -17,3 +17,4 @@ let events = core.Events;
 let backup = core.backup;
 
 export { tasks, settings, events, backup };
+export default { tasks, settings, events, backup };
