@@ -8,6 +8,7 @@ const tasks = {
 		taskData.params = taskData.params || {};
 		taskData.inform = taskData.inform || false;
 		taskData.isInterval = taskData.isInterval || false;
+		taskData.hidden = taskData.hidden || false;
 		if (taskData.plannedTime) {
 			taskData.plannedTime = Number(taskData.plannedTime);
 		}
@@ -30,13 +31,14 @@ const tasks = {
 		}
 		return await internal.addTask(taskData);
 	},
-	get: async (
-		taskID: string | Array<string>,
-	): Promise<SchedulerParseTask | boolean> => {
+	get: async (taskID: string): Promise<SchedulerParseTask | boolean> => {
 		let selectTask = config.scheduledTasks.find((x) => x.id === taskID);
 		if (!selectTask) {
 			return false;
-		} else if (selectTask.params.service !== true) {
+		} else if (
+			selectTask.type !== config.reservedType &&
+			selectTask.hidden !== true
+		) {
 			return await internal.parseTask(selectTask);
 		} else {
 			return false;
@@ -46,7 +48,10 @@ const tasks = {
 		let selectTask = config.scheduledTasks.find((x) => x.id === taskID);
 		if (!selectTask) {
 			return false;
-		} else if (selectTask.params.service !== true) {
+		} else if (
+			selectTask.type !== config.reservedType &&
+			selectTask.hidden !== true
+		) {
 			return await internal.deleteTaskByID(selectTask.id);
 		} else {
 			return false;
@@ -55,7 +60,10 @@ const tasks = {
 	getAll: async (): Promise<Array<SchedulerParseTask>> => {
 		let tasksList: Array<SchedulerParseTask> = [];
 		for (let i in config.scheduledTasks) {
-			if (config.scheduledTasks[i].type !== config.reservedType) {
+			if (
+				config.scheduledTasks[i].type !== config.reservedType &&
+				config.scheduledTasks[i].hidden !== true
+			) {
 				tasksList.push(await internal.parseTask(config.scheduledTasks[i]));
 			}
 		}

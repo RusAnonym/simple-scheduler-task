@@ -23,5 +23,5 @@ scheduler.events.on(`executions`, async (data) => {
 			},
 		}),
 	);
-	console.log(await scheduler.tasks.getAll());
+	scheduler.tasks.getAll().then((res) => console.log(res));
 })();

@@ -207,6 +207,7 @@ const internal = {
 			plannedTime: Number(taskData.plannedTime),
 			id: tempID,
 			type: taskData.type || "missing",
+			hidden: taskData.hidden || false,
 			params: taskData.params || {},
 			status: `awaiting`,
 			isInterval: taskData.isInterval || false,
@@ -240,7 +241,5 @@ const internal = {
 		return tempTask.id;
 	},
 };
-
-async function startSchedulerService() {}
 
 export { config, internal, tasks, logger, Events, settings, backup };

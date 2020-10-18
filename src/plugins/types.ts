@@ -2,6 +2,7 @@ import { EventEmitter } from "events";
 
 export interface SchedulerInputTask {
 	type?: string;
+	hidden?: boolean;
 	params?: any;
 	inform?: boolean;
 	isInterval?: boolean;
@@ -15,6 +16,7 @@ export interface SchedulerTask {
 	plannedTime: number;
 	id: string;
 	type: string;
+	hidden: boolean;
 	params: any;
 	status: string;
 	isInterval: boolean;
@@ -43,6 +45,7 @@ export interface SchedulerBackupTask {
 	plannedTime: number;
 	id: string;
 	type: string;
+	hidden: boolean;
 	params: any;
 	status: string;
 	isInterval: boolean;
