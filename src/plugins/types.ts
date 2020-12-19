@@ -6,6 +6,7 @@ export interface SchedulerInputTask {
 	params?: any;
 	inform?: boolean;
 	isInterval?: boolean;
+	backup?: boolean;
 	plannedTime?: number | Date;
 	intervalTimer?: number;
 	intervalTriggers?: number;
@@ -20,6 +21,7 @@ export interface SchedulerTask {
 	params: any;
 	status: string;
 	isInterval: boolean;
+	backup: boolean;
 	service: {
 		timeoutID: any;
 		create: number;
@@ -49,6 +51,7 @@ export interface SchedulerBackupTask {
 	params: any;
 	status: string;
 	isInterval: boolean;
+	backup: boolean;
 	service: {
 		timeoutID: any;
 		create: number;

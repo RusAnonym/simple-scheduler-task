@@ -211,12 +211,12 @@ scheduler.settings.editCheck(2000); // Promise<Boolean>
 scheduler.backup.init(); // Promise<Boolean>
 ```
 
-### run
+### save
 
 Сохраняет все задачи
 
 ```js
-scheduler.backup.run(); // Promise<Boolean>
+scheduler.backup.save(); // Promise<Boolean>
 ```
 
 ### load

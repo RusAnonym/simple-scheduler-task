@@ -4,43 +4,49 @@ import path from "path";
 import { config, internal } from "./core";
 
 const backup = {
-	run: async (): Promise<boolean> => {
+	save: async (): Promise<boolean> => {
 		try {
 			let mainDIR = require.main?.path;
 			let backupDIR = mainDIR + config.backup.folder;
 			for (let i in config.scheduledTasks) {
-				let tempTask: SchedulerTask = config.scheduledTasks[i];
-				if (tempTask.type !== config.reservedType && !tempTask.params.service) {
-					let parseTaskToBackup: SchedulerBackupTask = {
-						plannedTime: tempTask.plannedTime,
-						id: tempTask.id,
-						type: tempTask.type,
-						hidden: tempTask.hidden,
-						params: tempTask.params,
-						status: tempTask.status,
-						isInterval: tempTask.isInterval,
-						service: {
-							timeoutID: tempTask.service.timeoutID,
-							create: tempTask.service.create,
-							intervalTime: tempTask.service.intervalTime,
-							inform: tempTask.service.inform,
-							triggeringQuantity: tempTask.service.triggeringQuantity,
-							remainingTriggers: tempTask.service.remainingTriggers,
-							endlessInterval:
-								tempTask.isInterval &&
-								tempTask.service.remainingTriggers === Infinity
-									? true
-									: false,
-						},
-					};
-					fs.writeFileSync(
-						backupDIR + tempTask.id + `.json`,
-						JSON.stringify(parseTaskToBackup),
-					);
-					fs.writeFileSync(
-						backupDIR + tempTask.id + `.js`,
-						`module.exports = ` + tempTask.service.source.toString(),
-					);
+				if (config.scheduledTasks[i].backup === true) {
+					let tempTask: SchedulerTask = config.scheduledTasks[i];
+					if (
+						tempTask.type !== config.reservedType &&
+						!tempTask.params.service
+					) {
+						let parseTaskToBackup: SchedulerBackupTask = {
+							plannedTime: tempTask.plannedTime,
+							id: tempTask.id,
+							type: tempTask.type,
+							hidden: tempTask.hidden,
+							params: tempTask.params,
+							status: tempTask.status,
+							isInterval: tempTask.isInterval,
+							backup: tempTask.backup,
+							service: {
+								timeoutID: tempTask.service.timeoutID,
+								create: tempTask.service.create,
+								intervalTime: tempTask.service.intervalTime,
+								inform: tempTask.service.inform,
+								triggeringQuantity: tempTask.service.triggeringQuantity,
+								remainingTriggers: tempTask.service.remainingTriggers,
+								endlessInterval:
+									tempTask.isInterval &&
+									tempTask.service.remainingTriggers === Infinity
+										? true
+										: false,
+							},
+						};
+						fs.writeFileSync(
+							backupDIR + tempTask.id + `.json`,
+							JSON.stringify(parseTaskToBackup),
+						);
+						fs.writeFileSync(
+							backupDIR + tempTask.id + `.js`,
+							`module.exports = ` + tempTask.service.source.toString(),
+						);
+					}
 				}
 			}
 			return true;
@@ -71,6 +77,7 @@ const backup = {
 						params: task.params,
 						status: task.status,
 						isInterval: task.isInterval,
+						backup: task.backup,
 						service: {
 							timeoutID: task.service.timeoutID,
 							create: task.service.create,

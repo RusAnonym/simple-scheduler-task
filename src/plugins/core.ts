@@ -211,6 +211,7 @@ const internal = {
 			params: taskData.params || {},
 			status: `awaiting`,
 			isInterval: taskData.isInterval || false,
+			backup: taskData.backup || false,
 			service: {
 				timeoutID: null,
 				create: currentTime,

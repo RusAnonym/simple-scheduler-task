@@ -8,6 +8,7 @@ const tasks = {
 		taskData.params = taskData.params || {};
 		taskData.inform = taskData.inform || false;
 		taskData.isInterval = taskData.isInterval || false;
+		taskData.backup = taskData.backup || false;
 		taskData.hidden = taskData.hidden || false;
 		if (taskData.plannedTime) {
 			taskData.plannedTime = Number(taskData.plannedTime);
