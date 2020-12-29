@@ -1,4 +1,4 @@
-type taskStatus = "await" | "executed";
+type taskStatus = "await" | "works" | "executed";
 
 export interface ITask {
 	plannedTime: number;
@@ -13,8 +13,9 @@ export interface ITask {
 		timeoutID: NodeJS.Timer | null;
 		create: number;
 		intervalTime: number;
-		source: () => void;
+		source: () => Promise<any> | any;
 		inform: boolean;
+		infinityInterval: boolean;
 		triggeringQuantity: number;
 		remainingTriggers: number;
 	};
@@ -27,5 +28,6 @@ export interface IParseTask {
 	status: string;
 	inform: boolean;
 	isInterval: boolean;
-	source: Function;
+	nextExecute: Date;
+	source: () => Promise<any> | any;
 }

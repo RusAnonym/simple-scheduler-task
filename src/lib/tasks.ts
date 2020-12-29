@@ -1,6 +1,8 @@
-import { ITask } from "./../types/tasks";
+import { ITask, IParseTask } from "./../types/tasks";
 import * as utils from "./utils";
 import { config, tasks } from "./core";
+import { performance } from "perf_hooks";
+import { logger } from "./logger";
 
 function create(task: {
 	plannedTime: number;
@@ -36,12 +38,74 @@ function create(task: {
 			intervalTime: task.intervalTimer,
 			source: task.source,
 			inform: task.inform,
-			triggeringQuantity: task.intervalTriggers,
+			infinityInterval: task.intervalTriggers === 0,
+			triggeringQuantity: 0,
 			remainingTriggers: task.intervalTriggers,
 		},
 	};
 	utils.array.insert(tasks, newTaskIndex, newTask);
 	return newTaskID;
+}
+
+function parseTask(taskData: ITask): IParseTask {
+	return {
+		id: taskData.id,
+		type: taskData.type,
+		params: taskData.params,
+		status: taskData.status,
+		inform: taskData.service.inform,
+		isInterval: taskData.isInterval,
+		nextExecute: new Date(taskData.plannedTime),
+		source: taskData.service.source,
+	};
+}
+
+function execute(taskId: string): boolean {
+	let task = tasks.find((x) => x.id === taskId);
+	if (!task) {
+		return false;
+	} else {
+		task.status = "works";
+		if (task.isInterval === true) {
+			task.plannedTime = Number(new Date()) + task.service.intervalTime;
+		}
+		let startExecute = performance.now();
+		task.service
+			.source()
+			.then(async (result: any) => {
+				if (!task) {
+					return;
+				}
+
+				if (task.service.inform) {
+					let endExecute = performance.now();
+					return logger.success({
+						task: parseTask(task),
+						response: result,
+						executionTime: endExecute - startExecute,
+					});
+				} else {
+					return;
+				}
+			})
+			.catch(async (err: Error) => {
+				if (!task) {
+					return;
+				}
+
+				if (task.service.inform) {
+					let endExecute = performance.now();
+					return logger.error({
+						task: parseTask(task),
+						error: err,
+						executionTime: endExecute - startExecute,
+					});
+				} else {
+					return;
+				}
+			});
+		return true;
+	}
 }
 
 export { create };
