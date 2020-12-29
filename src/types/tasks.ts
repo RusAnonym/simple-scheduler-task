@@ -1,17 +1,19 @@
+type taskStatus = "await" | "executed";
+
 export interface ITask {
 	plannedTime: number;
 	id: string;
 	type: string;
 	hidden: boolean;
 	params: Record<string, any>;
-	status: string;
+	status: taskStatus;
 	isInterval: boolean;
 	backup: boolean;
 	service: {
-		timeoutID: any;
+		timeoutID: NodeJS.Timer | null;
 		create: number;
 		intervalTime: number;
-		source: Function;
+		source: () => void;
 		inform: boolean;
 		triggeringQuantity: number;
 		remainingTriggers: number;
