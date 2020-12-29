@@ -2,13 +2,13 @@
 	"name": "simple-scheduler-task",
 	"version": "3.0.13",
 	"description": "Simple module for easy work with task scheduling",
-	"main": "./lib/cjs/main.js",
-	"module": "./lib/main.js",
+	"main": "./out/cjs/main.js",
+	"module": "./out/main.js",
 	"repository": "https://github.com/RusAnonym/simple-scheduler-task",
 	"author": "RusAnonym",
 	"license": "MIT",
 	"directories": {
-		"lib": "lib"
+		"out": "out"
 	},
 	"scripts": {
 		"tsc": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json",
@@ -17,7 +17,7 @@
 		"prepublish": "npm run tsc"
 	},
 	"files": [
-		"lib/"
+		"out/"
 	],
 	"devDependencies": {
 		"@types/events": "^3.0.0",
