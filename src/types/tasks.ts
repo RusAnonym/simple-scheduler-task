@@ -28,6 +28,10 @@ export interface IParseTask {
 	status: string;
 	inform: boolean;
 	isInterval: boolean;
+	intervalData?: {
+		triggeringQuantity: number;
+		remainingTriggers: number;
+	};
 	nextExecute: Date;
 	source: () => Promise<any> | any;
 }

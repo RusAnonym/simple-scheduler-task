@@ -19,6 +19,4 @@ let config: {
 
 let tasks: ITask[] = [];
 
-const Task = TasksAPI.Task;
-
-export { config, tasks, settings, Task };
+export { config, tasks, settings, TasksAPI };

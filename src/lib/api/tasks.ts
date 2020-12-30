@@ -1,25 +1,27 @@
+import { IParseTask } from "./../../types/tasks";
 /**
  * @module Tasks
- * @description Методы для взаимодействия с задачами
+ * @description Methods for interacting with tasks
  */
 
-import { create } from "../tasks";
+import { tasks } from "../core";
+import { create, parseTask } from "../tasks";
 
 /**
  * @class
- * @classdesc Это конструктор для задач
+ * @classdesc This is a task constructor
  */
 class Task {
 	/**
-	 * @param {Object} params - Набор параметров для создания задачи
-	 * @param {Date | number} params.plannedTime - Время когда должна выполниться задача
-	 * @param {string} params.type - Тип задачи, ни на что не влияет, но можно использовать для получения списка задач с выбранным типом
-	 * @param {Object} params.params - Дополнительные параметры, для поиска задач
-	 * @param {boolean} params.inform - Информирование о завершении/ошибке после выполнения задачи
-	 * @param {boolean} params.isInterval - Является ли данная задача интервалом
-	 * @param {number} params.intervalTimer - Промежуток выполнения интервала в ms
-	 * @param {number} params.intervalTriggers - Количество срабатываний интервала, после чего он должен завершиться
-	 * @param {boolean} params.boolean - Сохранять ли эту задачу в автоматическом режиме
+	 * @param {Object} params - The set of parameters to create the task
+	 * @param {Date | number} params.plannedTime - The time when the task should be completed
+	 * @param {string} params.type - Type of task, does not influence anything, but you can use it to get the list of tasks with the selected type
+	 * @param {Object} params.params - Additional parameters, to search tasks
+	 * @param {boolean} params.inform - Informing about finish/error after task execution
+	 * @param {boolean} params.isInterval - Whether the task is an interval
+	 * @param {number} params.intervalTimer - The interval interval in ms
+	 * @param {number} params.intervalTriggers - The number of times the interval will be triggered before it should end
+	 * @param {boolean} params.boolean - Whether to save this task in automatic mode
 	 */
 	constructor(params: {
 		plannedTime: Date | number;
@@ -66,4 +68,23 @@ class Task {
 	}
 }
 
-export { Task };
+/**
+ * Allows you to get a list of all scheduled tasks
+ */
+function getAllTasks(): IParseTask[] {
+	return tasks.filter((task) => task.hidden !== true).map(parseTask);
+}
+
+/**
+ * Allows you to get the task by its ID
+ */
+function getTaskByID(taskId: string): IParseTask {
+	let task = tasks.find((x) => x.id === taskId);
+	if (!task) {
+		throw new Error(`No task with this ID was found`);
+	} else {
+		return parseTask(task);
+	}
+}
+
+export { Task, getAllTasks };

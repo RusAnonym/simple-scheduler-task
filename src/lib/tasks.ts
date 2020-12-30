@@ -51,7 +51,7 @@ function create(task: {
 }
 
 function parseTask(taskData: ITask): IParseTask {
-	return {
+	let output: IParseTask = {
 		id: taskData.id,
 		type: taskData.type,
 		params: taskData.params,
@@ -61,6 +61,13 @@ function parseTask(taskData: ITask): IParseTask {
 		nextExecute: new Date(taskData.plannedTime),
 		source: taskData.service.source,
 	};
+	if (taskData.isInterval) {
+		output.intervalData = {
+			triggeringQuantity: taskData.service.triggeringQuantity,
+			remainingTriggers: taskData.service.remainingTriggers,
+		};
+	}
+	return output;
 }
 
 function remove(taskData: ITask) {
