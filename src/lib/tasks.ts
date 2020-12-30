@@ -60,8 +60,13 @@ function parseTask(taskData: ITask): IParseTask {
 	};
 }
 
+function remove(taskData: ITask) {
+	const index = tasks.indexOf(taskData);
+	tasks.splice(index, 1);
+}
+
 function execute(taskId: string): boolean {
-	let task = tasks.find((x) => x.id === taskId);
+	const task = tasks.find((x) => x.id === taskId);
 	if (!task) {
 		return false;
 	} else {
@@ -69,16 +74,12 @@ function execute(taskId: string): boolean {
 		if (task.isInterval === true) {
 			task.plannedTime = Number(new Date()) + task.service.intervalTime;
 		}
-		let startExecute = performance.now();
+		const startExecute = performance.now();
 		task.service
 			.source()
 			.then(async (result: any) => {
-				if (!task) {
-					return;
-				}
-
 				if (task.service.inform) {
-					let endExecute = performance.now();
+					const endExecute = performance.now();
 					return logger.success({
 						task: parseTask(task),
 						response: result,
@@ -89,12 +90,8 @@ function execute(taskId: string): boolean {
 				}
 			})
 			.catch(async (err: Error) => {
-				if (!task) {
-					return;
-				}
-
 				if (task.service.inform) {
-					let endExecute = performance.now();
+					const endExecute = performance.now();
 					return logger.error({
 						task: parseTask(task),
 						error: err,
@@ -104,8 +101,30 @@ function execute(taskId: string): boolean {
 					return;
 				}
 			});
-		return true;
+		if (task.isInterval) {
+			if (task.service.infinityInterval === false) {
+				task.service.remainingTriggers--;
+				if (task.service.remainingTriggers === 0) {
+					remove(task);
+					return true;
+				}
+			}
+			task.service.triggeringQuantity += 1;
+			if (config.mode === "timeout") {
+			} else {
+				const taskIndex = tasks.findIndex((x) => x.id === taskId);
+				let newTaskIndex = tasks.findIndex(
+					(x) => x.plannedTime >= task.plannedTime && x.id !== task.id,
+				);
+				newTaskIndex + 1 !== tasks.length && newTaskIndex > 0
+					? newTaskIndex--
+					: null;
+				utils.array.move(tasks, taskIndex, newTaskIndex);
+			}
+		}
 	}
+
+	return true;
 }
 
 export { create };

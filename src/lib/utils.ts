@@ -5,6 +5,14 @@ const array = {
 		inputArray.splice(index, 0, element);
 		return true;
 	},
+	move: function (inputArray: any[], from: number, to: number) {
+		const startIndex = from < 0 ? inputArray.length + from : from;
+		if (startIndex >= 0 && startIndex < inputArray.length) {
+			const endIndex = to < 0 ? inputArray.length + to : to;
+			const [item] = inputArray.splice(from, 1);
+			inputArray.splice(endIndex, 0, item);
+		}
+	},
 };
 
 function generateID(): string {

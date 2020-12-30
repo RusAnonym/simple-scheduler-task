@@ -1,19 +1,6 @@
-let arr = [];
+let array = [{ id: "test" }, { id: "test2" }];
 
-const array = {
-	insert: function (inputArray, index, element) {
-		inputArray.splice(index, 0, element);
-		return true;
-	},
-};
+const task = array.find((x) => x.id === "test2");
 
-function getBetweenIndex(time) {
-	let maximalIndex = arr.findIndex((x) => x.plannedTime >= time);
-	maximalIndex === -1 ? (maximalIndex = arr.length) : null;
-	console.log(maximalIndex);
-	return maximalIndex;
-}
-
-let index = getBetweenIndex(5000);
-array.insert(arr, index, { plannedTime: 50001 });
-console.log(arr);
+task.id = "hui";
+console.log(array.indexOf(task));
