@@ -21,17 +21,7 @@ class Task {
 	 * @param {number} params.intervalTriggers - Количество срабатываний интервала, после чего он должен завершиться
 	 * @param {boolean} params.boolean - Сохранять ли эту задачу в автоматическом режиме
 	 */
-	constructor({
-		plannedTime,
-		type = "missing",
-		params = {},
-		inform = false,
-		isInterval = false,
-		intervalTimer = Number(plannedTime) - Number(new Date()),
-		intervalTriggers = 0,
-		backup = false,
-		source,
-	}: {
+	constructor(params: {
 		plannedTime: Date | number;
 		type: string;
 		params: Record<string, any>;
@@ -42,13 +32,29 @@ class Task {
 		backup: boolean;
 		source: () => void;
 	}) {
-		if (!plannedTime || !source) {
-			throw new Error("One of the required parameters is not specified");
+		const {
+			plannedTime,
+			type = "missing",
+			inform = false,
+			isInterval = false,
+			intervalTimer = Number(plannedTime) - Number(new Date()),
+			intervalTriggers = 0,
+			backup = false,
+			source,
+		} = params;
+
+		if (
+			!plannedTime ||
+			!source ||
+			new Date(plannedTime).toString() === "Invalid Date"
+		) {
+			throw new Error("One of the required parameters is missing or incorrect");
 		}
+
 		return create({
 			plannedTime: Number(plannedTime),
 			type: type,
-			params: params,
+			params: params.params || {},
 			inform: inform,
 			isInterval: isInterval,
 			intervalTimer: intervalTimer,

@@ -1,6 +1,17 @@
-let array = [{ id: "test" }, { id: "test2" }];
+const scheduler = require(`./out/cjs/main.js`);
 
-const task = array.find((x) => x.id === "test2");
+new scheduler.Task({
+	plannedTime: new Date(),
+	source: function () {
+		console.log(`Heyyy now`);
+	},
+});
 
-task.id = "hui";
-console.log(array.indexOf(task));
+new scheduler.Task({
+	plannedTime: new Date(`2020-12-30T15:00:00`),
+	source: function () {
+		console.log(`Heyyy`);
+	},
+});
+
+scheduler.settings.startInterval();

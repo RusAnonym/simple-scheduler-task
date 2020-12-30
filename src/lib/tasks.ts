@@ -65,8 +65,8 @@ function remove(taskData: ITask) {
 	tasks.splice(index, 1);
 }
 
-function execute(taskId: string): boolean {
-	const task = tasks.find((x) => x.id === taskId);
+function execute(taskData: ITask): boolean {
+	const task = taskData;
 	if (!task) {
 		return false;
 	} else {
@@ -112,7 +112,7 @@ function execute(taskId: string): boolean {
 			task.service.triggeringQuantity += 1;
 			if (config.mode === "timeout") {
 			} else {
-				const taskIndex = tasks.findIndex((x) => x.id === taskId);
+				const taskIndex = tasks.findIndex((x) => x.id === taskData.id);
 				let newTaskIndex = tasks.findIndex(
 					(x) => x.plannedTime >= task.plannedTime && x.id !== task.id,
 				);
@@ -127,4 +127,4 @@ function execute(taskId: string): boolean {
 	return true;
 }
 
-export { create };
+export { create, execute, parseTask, remove };

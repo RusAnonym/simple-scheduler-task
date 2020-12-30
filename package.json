@@ -11,9 +11,8 @@
 		"out": "out"
 	},
 	"scripts": {
-		"tsc": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json",
-		"build": "tsc",
-		"test": "yarn tsc && node test.js",
+		"build": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json",
+		"test": "yarn build && node test.js",
 		"docs": "jsdoc -c jsdoc.json",
 		"prepublish": "yarn build && yarn docs"
 	},
