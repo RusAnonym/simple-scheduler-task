@@ -74,7 +74,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-Tasks.html">Tasks</a></li></ul><h3>Classes</h3><ul><li><a href="module-Tasks-Task.html">Task</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-Settings.html">Settings</a></li><li><a href="module-Tasks.html">Tasks</a></li></ul><h3>Classes</h3><ul><li><a href="module-Tasks-Task.html">Task</a></li></ul></div>
                 
             </nav>
         </div>
@@ -417,7 +417,7 @@
         <p class="tag-source">
             <a href="tasks.ts.html" class="button">View Source</a>
             <span>
-                <a href="tasks.ts.html">tasks.ts</a>, <a href="tasks.ts.html#line12">line 12</a>
+                <a href="tasks.ts.html">tasks.ts</a>, <a href="tasks.ts.html#line21">line 21</a>
             </span>
         </p>
     
@@ -441,6 +441,13 @@
 
 
 
+
+
+    <h5>Example</h5>
+    
+    
+        <pre class="prettyprint"><code>scheduler.tasks.Task({	plannedTime: Number(new Date()) + 5 * 60 * 1000,	source: function () {		console.log(`Hey`);	}});</code></pre>
+    
 
 
 

@@ -2,6 +2,8 @@ import { ITask, IParseTask } from "./../../types/tasks";
 /**
  * @module Tasks
  * @description Methods for interacting with tasks
+ * @example
+ * const scheduler = require(`simple-scheduler-task`);
  */
 
 import { tasks } from "../core";
@@ -10,6 +12,13 @@ import { create, parseTask } from "../tasks";
 /**
  * @class
  * @classdesc This is a task constructor
+ * @example
+ * scheduler.tasks.Task({
+ * 	plannedTime: Number(new Date()) + 5 * 60 * 1000,
+ * 	source: function () {
+ * 		console.log(`Hey`);
+ * 	}
+ * });
  */
 class Task {
 	/**
@@ -70,6 +79,8 @@ class Task {
 
 /**
  * Allows you to get a list of all scheduled tasks
+ * @example
+ * scheduler.task.getAllTasks(); // => Array with all tasks
  */
 function getAllTasks(): IParseTask[] {
 	return tasks.filter((task) => task.hidden !== true).map(parseTask);
@@ -77,6 +88,7 @@ function getAllTasks(): IParseTask[] {
 
 /**
  * Allows you to get the task by its ID
+ * @param {taskId} - ID of task
  */
 function getTaskByID(taskId: string): IParseTask {
 	let task = tasks.find((x) => x.id === taskId);

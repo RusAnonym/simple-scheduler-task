@@ -6,7 +6,7 @@ new scheduler.Task({
 	intervalTimer: 1000,
 	intervalTriggers: 10,
 	source: function () {
-		console.log(scheduler.tasks.getAllTasks());
+		console.log(scheduler.settings.useInterval());
 	},
 });
 

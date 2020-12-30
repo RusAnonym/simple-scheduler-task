@@ -1,11 +1,6 @@
 import { ITask } from "./../types/tasks";
-import { startInterval, startTimeout } from "./settings";
 import * as TasksAPI from "./api/tasks";
-
-const settings = {
-	startInterval,
-	startTimeout,
-};
+import settings from "./api/settings";
 
 let config: {
 	mode: "timeout" | "interval" | "not_work";
@@ -19,4 +14,4 @@ let config: {
 
 let tasks: ITask[] = [];
 
-export { config, tasks, settings, TasksAPI };
+export { config, tasks, TasksAPI, settings };
