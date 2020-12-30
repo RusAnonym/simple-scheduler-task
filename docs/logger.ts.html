@@ -7,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Documentation settings.ts</title>
+  <title>Documentation logger.ts</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -84,7 +84,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Source</p>
-                    <h1>settings.ts</h1>
+                    <h1>logger.ts</h1>
                 </header>
                 
 
@@ -93,34 +93,67 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import * as settings from "../settings";
+            <pre class="prettyprint source linenums"><code>import {
+	SchedulerErrorLog,
+	SchedulerInformLog,
+	Logger,
+} from "../../types/scheduler";
 
 /**
- * @module Settings
- * @description Scheduler settings
- * @example
+ * @module Logger
+ * @description Module for working with events
+ */
+
+/**
+ * You can even define your own types in JSDoc
+ *
+ * @typedef {Object} Error
+ * @property {String} first      Some example property
+ * @property {String} another    Another property
+ */
+
+/**
+ * You can get the value returned by the scheduled task, and you can also get the errors that occur during the execution of the task when using events.
+ * More about how events work: {@link https://nodejs.org/api/events.html}
+ *
+ * @example &lt;caption>Logs is text messages without a date&lt;/caption>
+ * // Handling logs
  * const scheduler = require(`simple-scheduler-task`);
- */
-
-/**
- * Includes task scheduling with one interval
+ * scheduler.events.on("logs", function (log) {
+ *    console.log(log); // => Log structure
+ * });
+ * @returns {Error}
+ *
+ *
  * @example
- * scheduler.settings.useInterval(); // => bool
- */
-function useInterval(): boolean {
-	return settings.startInterval();
-}
-
-/**
- * Enables task scheduling with a separate timeout for each task
+ * // Handling executions
+ * const scheduler = require(`simple-scheduler-task`);
+ * scheduler.events.on("executions", function (execution) {
+ *    console.log(execution); // => Execution structure
+ * });
+ *
  * @example
- * scheduler.settings.useTimeouts(); // => bool
+ * // Handling errors
+ * const scheduler = require(`simple-scheduler-task`);
+ * scheduler.events.on("errors", function (error) {
+ *    console.log(error); // => Error structure
+ * });
  */
-function useTimeouts(): boolean {
-	return settings.startTimeout();
-}
+const Events = new Logger();
 
-export default { useInterval, useTimeouts };
+const logger = {
+	text: (text: string) => {
+		return Events.emitText(text);
+	},
+	error: (error: SchedulerErrorLog) => {
+		return Events.emitError(error);
+	},
+	success: (task: SchedulerInformLog) => {
+		return Events.emitSuccess(task);
+	},
+};
+
+export { logger, Events };
 </code></pre>
         </article>
     </section>

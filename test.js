@@ -9,5 +9,3 @@ new scheduler.Task({
 		console.log(scheduler.settings.useInterval());
 	},
 });
-
-scheduler.settings.startTimeout();

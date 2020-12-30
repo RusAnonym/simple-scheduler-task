@@ -2,7 +2,7 @@ import { ITask, IParseTask } from "./../types/tasks";
 import * as utils from "./utils";
 import { config, tasks } from "./core";
 import { performance } from "perf_hooks";
-import { logger } from "./logger";
+import { logger } from "./api/logger";
 
 function create(task: {
 	plannedTime: number;

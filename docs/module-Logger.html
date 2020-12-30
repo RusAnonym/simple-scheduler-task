@@ -5,7 +5,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Documentation Tasks</title>
+  <title>Documentation Logger</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -82,7 +82,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Module</p>
-                    <h1>Tasks</h1>
+                    <h1>Logger</h1>
                 </header>
                 
 
@@ -103,7 +103,7 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>Methods for interacting with tasks</p></div>
+            <div class="description"><p>Module for working with events</p></div>
         
 
         
@@ -155,9 +155,9 @@
 
     
         <p class="tag-source">
-            <a href="tasks.ts.html" class="button">View Source</a>
+            <a href="logger.ts.html" class="button">View Source</a>
             <span>
-                <a href="tasks.ts.html">tasks.ts</a>, <a href="tasks.ts.html#line2">line 2</a>
+                <a href="logger.ts.html">logger.ts</a>, <a href="logger.ts.html#line3">line 3</a>
             </span>
         </p>
     
@@ -183,13 +183,6 @@
 
 
 
-    <h5>Example</h5>
-    
-    
-        <pre class="prettyprint"><code>const scheduler = require(`simple-scheduler-task`);</code></pre>
-    
-
-
 
         
     
@@ -197,15 +190,6 @@
     
     
 
-    
-
-    
-        <h3 class="subsection-title">Classes</h3>
-
-        <dl>
-            <dt><a href="module-Tasks-Task.html">Task</a></dt>
-            <dd></dd>
-        </dl>
     
 
     
@@ -218,42 +202,33 @@
 
     
         <div class='vertical-section'>
-            <h1>Methods</h1>
+            <h1>Members</h1>
             <div class="members">
             
                 <div class="member">
 
-
+<h4 class="name" id="~Events">
+    <a class="href-link" href="#~Events">#</a>
     
-    <h4 class="name" id="~getAllTasks">
-        <a class="href-link" href="#~getAllTasks">#</a>
         
-            
-                <span class='tag'>inner</span>
-            
+            <span class='tag'>inner</span>
         
-        <span class="code-name">
-            
-                getAllTasks<span class="signature">()</span><span class="type-signature"></span>
-            
-        </span>
-    </h4>
+            <span class='tag'>constant</span>
+        
     
-
+    <span class="code-name">
+        Events
+    </span>
     
-    
-    <div class="description">
-        <p>Allows you to get a list of all scheduled tasks</p>
-    </div>
-    
+</h4>
 
 
 
 
-
-
-
-
+<div class="description">
+    <p>You can get the value returned by the scheduled task, and you can also get the errors that occur during the execution of the task when using events.
+More about how events work: <a href="https://nodejs.org/api/events.html">https://nodejs.org/api/events.html</a></p>
+</div>
 
 
 
@@ -292,9 +267,9 @@
 
     
         <p class="tag-source">
-            <a href="tasks.ts.html" class="button">View Source</a>
+            <a href="logger.ts.html" class="button">View Source</a>
             <span>
-                <a href="tasks.ts.html">tasks.ts</a>, <a href="tasks.ts.html#line59">line 59</a>
+                <a href="logger.ts.html">logger.ts</a>, <a href="logger.ts.html#line41">line 41</a>
             </span>
         </p>
     
@@ -304,65 +279,71 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Example</h5>
+    <h5>Examples</h5>
+    
+        <p class="code-caption">Logs is text messages without a date</p>
     
     
-        <pre class="prettyprint"><code>scheduler.task.getAllTasks(); // => Array with all tasks</code></pre>
+        <pre class="prettyprint"><code>// Handling logsconst scheduler = require(`simple-scheduler-task`);scheduler.events.on("logs", function (log) {   console.log(log); // => Log structure});</code></pre>
+    
+
+    
+        <pre class="prettyprint"><code>// Handling executionsconst scheduler = require(`simple-scheduler-task`);scheduler.events.on("executions", function (execution) {   console.log(execution); // => Execution structure});</code></pre>
+    
+
+    
+        <pre class="prettyprint"><code>// Handling errorsconst scheduler = require(`simple-scheduler-task`);scheduler.events.on("errors", function (error) {   console.log(error); // => Error structure});</code></pre>
     
 
 
 </div>
             
+            </div>
+        </div>
+    
+
+    
+
+    
+        <div class='vertical-section'>
+            <h1>Type Definitions</h1>
+            <div class="members">
+            
                 <div class="member">
 
-
-    
-    <h4 class="name" id="~getFilterTasks">
-        <a class="href-link" href="#~getFilterTasks">#</a>
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
         
-            
-                <span class='tag'>inner</span>
-            
-        
-        <span class="code-name">
-            
-                getFilterTasks<span class="signature">(params)</span><span class="type-signature"></span>
-            
-        </span>
-    </h4>
+<span class="param-type">Object</span>
+
+
+    </span>
+
+<h4 class="name" id="~Error">
+    <a class="href-link" href="#~Error">#</a>
     
-
+    <span class="code-name">
+        Error
+    </span>
     
-    
+</h4>
+
+
+
+
+<div class="description">
+    <p>You can even define your own types in JSDoc</p>
+</div>
 
 
 
 
 
+    <h5 class="subsection-title">Properties:</h5>
 
-
-
-
-    <h5>Parameters:</h5>
     
 <div class="table-container">
-    <table class="params table">
+    <table class="props table">
         <thead>
         <tr>
             
@@ -381,85 +362,55 @@
 
         <tbody>
         
-
             
 <tr class="deep-level-0">
-  
-      <td class="name"><code>params</code></td>
-  
-
-  <td class="type">
-  
-      
-<span class="param-type">Object</span>
-
-
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last"><p>Set of parameters to filter tasks</p></td>
-</tr>
-
-  
-  
     
-<tr class="deep-level-1">
-  
-      <td class="name"><code>type</code></td>
-  
-
-  <td class="type">
-  
-      
-<span class="param-type">string</span>
-
-
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last"><p>Type of task</p></td>
-</tr>
-
-  
+        <td class="name"><code>first</code></td>
     
-<tr class="deep-level-1">
-  
-      <td class="name"><code>params</code></td>
-  
 
-  <td class="type">
-  
-      
-<span class="param-type">Object</span>
+    <td class="type">
+    
+        
+<span class="param-type">String</span>
 
 
-  
-  </td>
+    
+    </td>
 
-  
+    
 
-  
+    
 
-  <td class="description last"><p>Additional parameters, to search tasks</p></td>
+    <td class="description last"><p>Some example property</p></td>
 </tr>
 
-  
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>another</code></td>
+    
 
+    <td class="type">
+    
+        
+<span class="param-type">String</span>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>Another property</p></td>
+</tr>
 
         
         </tbody>
     </table>
 </div>
-
-
 
 
 
@@ -496,181 +447,13 @@
 
     
         <p class="tag-source">
-            <a href="tasks.ts.html" class="button">View Source</a>
+            <a href="logger.ts.html" class="button">View Source</a>
             <span>
-                <a href="tasks.ts.html">tasks.ts</a>, <a href="tasks.ts.html#line80">line 80</a>
+                <a href="logger.ts.html">logger.ts</a>, <a href="logger.ts.html#line7">line 7</a>
             </span>
         </p>
     
 </dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-
-    
-    <h4 class="name" id="~getTaskByID">
-        <a class="href-link" href="#~getTaskByID">#</a>
-        
-            
-                <span class='tag'>inner</span>
-            
-        
-        <span class="code-name">
-            
-                getTaskByID<span class="signature">(taskId)</span><span class="type-signature"></span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        <p>Allows you to get the task by its ID</p>
-    </div>
-    
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-<div class="table-container">
-    <table class="params table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>taskId</code></td>
-  
-
-  <td class="type">
-  
-      
-<span class="param-type">taskId</span>
-
-
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last"><p>ID of task</p></td>
-</tr>
-
-
-        
-        </tbody>
-    </table>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="tasks.ts.html" class="button">View Source</a>
-            <span>
-                <a href="tasks.ts.html">tasks.ts</a>, <a href="tasks.ts.html#line66">line 66</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -680,8 +463,6 @@
             
             </div>
         </div>
-    
-
     
 
     

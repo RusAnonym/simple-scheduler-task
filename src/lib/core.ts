@@ -1,6 +1,7 @@
 import { ITask } from "./../types/tasks";
 import * as TasksAPI from "./api/tasks";
 import settings from "./api/settings";
+import { logger, Events } from "./api/logger";
 
 let config: {
 	mode: "timeout" | "interval" | "not_work";
@@ -14,4 +15,4 @@ let config: {
 
 let tasks: ITask[] = [];
 
-export { config, tasks, TasksAPI, settings };
+export { config, tasks, TasksAPI, settings, logger, Events };
