@@ -1,4 +1,4 @@
-import { IParseTask } from "./../../types/tasks";
+import { ITask, IParseTask } from "./../../types/tasks";
 /**
  * @module Tasks
  * @description Methods for interacting with tasks
@@ -87,4 +87,24 @@ function getTaskByID(taskId: string): IParseTask {
 	}
 }
 
-export { Task, getAllTasks };
+/**
+ * @param {Object} params - Set of parameters to filter tasks
+ * @param {string} params.type - Type of task
+ * @param {Object} params.params - Additional parameters, to search tasks
+ */
+function getFilterTasks(params: {
+	type?: string;
+	params?: Record<string, any>;
+}) {
+	let findTasks: ITask[] = [];
+	if (params.type) {
+		findTasks = tasks.filter((x) => x.type === params.type);
+	}
+	findTasks.length === 0 ? (findTasks = tasks) : null;
+	if (params.params) {
+		findTasks.filter((x) => x.params === params.params);
+	}
+	return findTasks.map(parseTask);
+}
+
+export { Task, getAllTasks, getFilterTasks };
