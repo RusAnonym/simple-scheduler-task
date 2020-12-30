@@ -87,6 +87,7 @@ async function execute(taskData: ITask): Promise<boolean> {
 		const startExecute = performance.now();
 		try {
 			let response = await task.service.source();
+			task.status = "executed";
 			if (task.service.inform) {
 				const endExecute = performance.now();
 				logger.success({
