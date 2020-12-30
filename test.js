@@ -2,16 +2,12 @@ const scheduler = require(`./out/cjs/main.js`);
 
 new scheduler.Task({
 	plannedTime: new Date(),
+	isInterval: true,
+	intervalTimer: 1000,
+	intervalTriggers: 10,
 	source: function () {
-		console.log(`Heyyy now`);
+		console.log(new Date());
 	},
 });
 
-new scheduler.Task({
-	plannedTime: new Date(`2020-12-30T15:00:00`),
-	source: function () {
-		console.log(`Heyyy`);
-	},
-});
-
-scheduler.settings.startInterval();
+scheduler.settings.startTimeout();

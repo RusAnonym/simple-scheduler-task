@@ -9,10 +9,18 @@ function startInterval(): boolean {
 		config.interval = setInterval(() => {
 			const now = Number(new Date());
 			let maximalIndex = tasks.findIndex((x) => x.plannedTime > now);
-			console.log(tasks);
-			console.log(maximalIndex);
-			for (let index = 0; index < maximalIndex; index++) {
-				TasksAPI.execute(tasks[index]);
+			if (maximalIndex === -1) {
+				tasks.map((task) => {
+					if (now >= task.plannedTime && task.status === "await") {
+						TasksAPI.execute(task);
+					}
+				});
+			} else {
+				for (let index = 0; index < maximalIndex; index++) {
+					tasks[index].status === "await"
+						? TasksAPI.execute(tasks[index])
+						: null;
+				}
 			}
 		}, config.intervalMS);
 		config.mode = "interval";
@@ -24,9 +32,17 @@ function startTimeout(): boolean {
 	if (config.mode === "timeout") {
 		return false;
 	} else {
-		stopTimeout();
-
+		stopInterval();
 		config.mode = "timeout";
+		for (const task of tasks) {
+			if (task.plannedTime < Number(new Date())) {
+				TasksAPI.execute(task);
+			} else {
+				task.service.timeoutID = setTimeout(() => {
+					TasksAPI.execute(task);
+				}, task.plannedTime - Number(new Date()));
+			}
+		}
 		return true;
 	}
 }
@@ -42,6 +58,12 @@ function stopInterval(): boolean {
 
 function stopTimeout(): boolean {
 	if (config.mode === "timeout") {
+		for (const task of tasks) {
+			if (task.service.timeoutID !== null) {
+				clearTimeout(task.service.timeoutID);
+				task.service.timeoutID = null;
+			}
+		}
 		return true;
 	} else {
 		return false;

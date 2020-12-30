@@ -30,10 +30,7 @@ function create(task: {
 		isInterval: task.isInterval,
 		backup: task.backup,
 		service: {
-			timeoutID:
-				config.mode === "timeout"
-					? setTimeout(async () => {}, task.plannedTime)
-					: null,
+			timeoutID: null,
 			create: Number(new Date()),
 			intervalTime: task.intervalTimer,
 			source: task.source,
@@ -43,7 +40,13 @@ function create(task: {
 			remainingTriggers: task.intervalTriggers,
 		},
 	};
+	if (config.mode === "timeout") {
+		newTask.service.timeoutID = setTimeout(() => {
+			execute(newTask);
+		}, task.plannedTime - Number(new Date()));
+	}
 	utils.array.insert(tasks, newTaskIndex, newTask);
+	console.log(newTask);
 	return newTaskID;
 }
 
@@ -65,7 +68,7 @@ function remove(taskData: ITask) {
 	tasks.splice(index, 1);
 }
 
-function execute(taskData: ITask): boolean {
+async function execute(taskData: ITask): Promise<boolean> {
 	const task = taskData;
 	if (!task) {
 		return false;
@@ -75,51 +78,53 @@ function execute(taskData: ITask): boolean {
 			task.plannedTime = Number(new Date()) + task.service.intervalTime;
 		}
 		const startExecute = performance.now();
-		task.service
-			.source()
-			.then(async (result: any) => {
-				if (task.service.inform) {
-					const endExecute = performance.now();
-					return logger.success({
-						task: parseTask(task),
-						response: result,
-						executionTime: endExecute - startExecute,
-					});
-				} else {
-					return;
-				}
-			})
-			.catch(async (err: Error) => {
-				if (task.service.inform) {
-					const endExecute = performance.now();
-					return logger.error({
-						task: parseTask(task),
-						error: err,
-						executionTime: endExecute - startExecute,
-					});
-				} else {
-					return;
-				}
-			});
-		if (task.isInterval) {
-			if (task.service.infinityInterval === false) {
-				task.service.remainingTriggers--;
-				if (task.service.remainingTriggers === 0) {
-					remove(task);
-					return true;
-				}
+		try {
+			let response = await task.service.source();
+			if (task.service.inform) {
+				const endExecute = performance.now();
+				logger.success({
+					task: parseTask(task),
+					response: response,
+					executionTime: endExecute - startExecute,
+				});
 			}
-			task.service.triggeringQuantity += 1;
-			if (config.mode === "timeout") {
+		} catch (error) {
+			if (task.service.inform) {
+				const endExecute = performance.now();
+				logger.error({
+					task: parseTask(task),
+					error: error,
+					executionTime: endExecute - startExecute,
+				});
+			}
+		} finally {
+			task.status = "await";
+			if (task.isInterval) {
+				if (task.service.infinityInterval === false) {
+					task.service.remainingTriggers--;
+					if (task.service.remainingTriggers === 0) {
+						remove(task);
+						return true;
+					}
+				}
+				task.service.triggeringQuantity += 1;
+				if (config.mode === "timeout") {
+					taskData.service.timeoutID = setTimeout(() => {
+						execute(taskData);
+					}, task.plannedTime - Number(new Date()));
+				} else {
+					const taskIndex = tasks.findIndex((x) => x.id === taskData.id);
+					let newTaskIndex = tasks.findIndex(
+						(x) => x.plannedTime >= task.plannedTime && x.id !== task.id,
+					);
+					newTaskIndex + 1 !== tasks.length && newTaskIndex > 0
+						? newTaskIndex--
+						: null;
+					utils.array.move(tasks, taskIndex, newTaskIndex);
+				}
 			} else {
-				const taskIndex = tasks.findIndex((x) => x.id === taskData.id);
-				let newTaskIndex = tasks.findIndex(
-					(x) => x.plannedTime >= task.plannedTime && x.id !== task.id,
-				);
-				newTaskIndex + 1 !== tasks.length && newTaskIndex > 0
-					? newTaskIndex--
-					: null;
-				utils.array.move(tasks, taskIndex, newTaskIndex);
+				remove(task);
+				return true;
 			}
 		}
 	}

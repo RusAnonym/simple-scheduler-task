@@ -1,9 +1,10 @@
 import { ITask } from "./../types/tasks";
-import { startInterval } from "./settings";
+import { startInterval, startTimeout } from "./settings";
 import * as TasksAPI from "./api/tasks";
 
 const settings = {
 	startInterval,
+	startTimeout,
 };
 
 let config: {
