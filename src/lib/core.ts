@@ -15,4 +15,8 @@ let config: {
 
 let tasks: ITask[] = [];
 
+(function startScheduler() {
+	settings.useInterval();
+})();
+
 export { config, tasks, TasksAPI, settings, logger, Events };

@@ -10,7 +10,7 @@ import * as settings from "../settings";
 /**
  * Includes task scheduling with one interval
  * @example
- * scheduler.settings.useInterval(); // => bool
+ * scheduler.settings.useInterval(); // => true
  */
 function useInterval(): boolean {
 	return settings.startInterval();
@@ -19,7 +19,7 @@ function useInterval(): boolean {
 /**
  * Enables task scheduling with a separate timeout for each task
  * @example
- * scheduler.settings.useTimeouts(); // => bool
+ * scheduler.settings.useTimeouts(); // => true
  */
 function useTimeouts(): boolean {
 	return settings.startTimeout();

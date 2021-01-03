@@ -1,4 +1,8 @@
 import { ITask, IParseTask } from "./../../types/tasks";
+import { tasks } from "../core";
+import { create, parseTask } from "../tasks";
+import * as userTypes from "./types";
+
 /**
  * @module Tasks
  * @description Methods for interacting with tasks
@@ -6,14 +10,11 @@ import { ITask, IParseTask } from "./../../types/tasks";
  * const scheduler = require(`simple-scheduler-task`);
  */
 
-import { tasks } from "../core";
-import { create, parseTask } from "../tasks";
-
 /**
  * @class
  * @classdesc This is a task constructor
  * @example
- * scheduler.tasks.Task({
+ * new scheduler.tasks.Task({
  * 	plannedTime: Number(new Date()) + 5 * 60 * 1000,
  * 	source: function () {
  * 		console.log(`Hey`);
@@ -22,27 +23,10 @@ import { create, parseTask } from "../tasks";
  */
 class Task {
 	/**
-	 * @param {Object} params - The set of parameters to create the task
-	 * @param {Date | number} params.plannedTime - The time when the task should be completed
-	 * @param {string} params.type - Type of task, does not influence anything, but you can use it to get the list of tasks with the selected type
-	 * @param {Object} params.params - Additional parameters, to search tasks
-	 * @param {boolean} params.inform - Informing about finish/error after task execution
-	 * @param {boolean} params.isInterval - Whether the task is an interval
-	 * @param {number} params.intervalTimer - The interval interval in ms
-	 * @param {number} params.intervalTriggers - The number of times the interval will be triggered before it should end
-	 * @param {boolean} params.backup - Whether to save this task in automatic mode
+	 * This is task constructor
+	 * {@link inputTask}
 	 */
-	constructor(params: {
-		plannedTime: Date | number;
-		type: string;
-		params: Record<string, any>;
-		inform: boolean;
-		isInterval: boolean;
-		intervalTimer?: number;
-		intervalTriggers?: number;
-		backup: boolean;
-		source: () => void;
-	}) {
+	constructor(params: userTypes.inputTask) {
 		const {
 			plannedTime,
 			type = "missing",

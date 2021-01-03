@@ -1,6 +1,6 @@
 {
 	"tags": {
-		"allowUnknownTags": ["category", "subcategory"]
+		"allowUnknownTags": true
 	},
 	"source": {
 		"include": ["./src/lib/api"],

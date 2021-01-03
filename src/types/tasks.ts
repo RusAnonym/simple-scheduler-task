@@ -29,6 +29,7 @@ export interface IParseTask {
 	inform: boolean;
 	isInterval: boolean;
 	intervalData?: {
+		infinityInterval: boolean;
 		triggeringQuantity: number;
 		remainingTriggers: number;
 	};

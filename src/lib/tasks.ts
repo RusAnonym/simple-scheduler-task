@@ -63,6 +63,7 @@ function parseTask(taskData: ITask): IParseTask {
 	};
 	if (taskData.isInterval) {
 		output.intervalData = {
+			infinityInterval: taskData.service.infinityInterval,
 			triggeringQuantity: taskData.service.triggeringQuantity,
 			remainingTriggers: taskData.service.remainingTriggers,
 		};
