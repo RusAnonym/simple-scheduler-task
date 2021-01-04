@@ -15,7 +15,7 @@ function create(task: {
 	backup: boolean;
 	service: boolean;
 	source: () => void;
-}) {
+}): string {
 	task.service === true ? (task.type = "scheduler_service_" + task.type) : null;
 	let newTaskIndex = tasks.findIndex((x) => x.plannedTime >= task.plannedTime);
 	newTaskIndex === -1 ? (newTaskIndex = tasks.length) : null;
@@ -70,9 +70,10 @@ function parseTask(taskData: ITask): IParseTask {
 	return output;
 }
 
-function remove(taskData: ITask) {
+function remove(taskData: ITask): true {
 	const index = tasks.indexOf(taskData);
 	tasks.splice(index, 1);
+	return true;
 }
 
 async function execute(taskData: ITask): Promise<boolean> {
@@ -82,9 +83,6 @@ async function execute(taskData: ITask): Promise<boolean> {
 		return false;
 	} else {
 		task.status = "works";
-		if (task.isInterval === true) {
-			task.plannedTime = Number(currentDate) + task.service.intervalTime;
-		}
 		const startExecute = performance.now();
 		try {
 			let response = await task.service.source();
@@ -118,7 +116,6 @@ async function execute(taskData: ITask): Promise<boolean> {
 				});
 			}
 		} finally {
-			task.status = "await";
 			if (task.isInterval) {
 				if (task.service.infinityInterval === false) {
 					if (task.service.remainingTriggers === 0) {
@@ -126,6 +123,7 @@ async function execute(taskData: ITask): Promise<boolean> {
 						return true;
 					}
 				}
+				task.plannedTime = Number(currentDate) + task.service.intervalTime;
 				if (config.mode === "timeout") {
 					taskData.service.timeoutID = setTimeout(() => {
 						execute(taskData);
@@ -141,7 +139,6 @@ async function execute(taskData: ITask): Promise<boolean> {
 					utils.array.move(tasks, taskIndex, newTaskIndex);
 				}
 			} else {
-				task.status = "executed";
 				remove(task);
 				return true;
 			}
