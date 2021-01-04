@@ -24,7 +24,7 @@ import * as userTypes from "./types";
 class Task {
 	/**
 	 * This is task constructor
-	 * {@link inputTask}
+	 * @param {Object} params {@link inputTask}
 	 */
 	constructor(params: userTypes.inputTask) {
 		const {
@@ -63,7 +63,7 @@ class Task {
 
 /**
  * This is a function that adds a new task, analogous to new Task
- * Input params: {@link inputTask}
+ * @param {Object} params {@link inputTask}
  */
 function add(params: userTypes.inputTask) {
 	const {

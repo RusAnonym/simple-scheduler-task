@@ -42,7 +42,7 @@
             
              
                 <a href="index.html">
-                    <h1 class="navbar-item">SimleTaskScheduler documentation</h1>
+                    <h1 class="navbar-item">SimpleTaskScheduler documentation</h1>
                 </a>
             
         </div>
@@ -74,7 +74,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-Logger.html">Logger</a></li><li><a href="module-Settings.html">Settings</a></li><li><a href="module-Tasks.html">Tasks</a></li></ul><h3>Classes</h3><ul><li><a href="module-Tasks-Task.html">Task</a></li></ul><h3>Interfaces</h3><ul><li><a href="ErrorLog.html">ErrorLog</a></li><li><a href="inputTask.html">inputTask</a></li><li><a href="parseTask.html">parseTask</a></li><li><a href="SuccessLog.html">SuccessLog</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-Logger.html">Logger</a></li><li><a href="module-Settings.html">Settings</a></li><li><a href="module-Tasks.html">Tasks</a></li></ul><h3>Classes</h3><ul><li><a href="module-Tasks-Task.html">Task</a></li></ul><h3>Interfaces</h3><ul><li><a href="ErrorLog.html">ErrorLog</a></li><li><a href="inputTask.html">inputTask</a></li><li><a href="parseTask.html">parseTask</a></li><li><a href="SuccessLog.html">SuccessLog</a></li></ul><h3>Events</h3><ul><li><a href="module-Logger.html#~event:Error">Error</a></li><li><a href="module-Logger.html#~event:Success">Success</a></li><li><a href="module-Logger.html#~event:Text">Text</a></li></ul></div>
                 
             </nav>
         </div>
@@ -209,6 +209,331 @@ More about how events work: <a href="https://nodejs.org/api/events.html">https:/
     
 
     
+        <div class='vertical-section'>
+            <h1>Events</h1>
+            <div class="members">
+            
+                <div class="member">
+                    
+
+
+    
+    <h4 class="name" id="~event:Error">
+        <a class="href-link" href="#~event:Error">#</a>
+        
+        <span class="code-name">
+            
+                Error
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Allows you to handle events with an error structure (<a href="ErrorLog.html">ErrorLog</a>)</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="logger.ts.html" class="button">View Source</a>
+            <span>
+                <a href="logger.ts.html">logger.ts</a>, <a href="logger.ts.html#line24">line 24</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    
+        <pre class="prettyprint"><code>// Handling errorsconst scheduler = require(`simple-scheduler-task`);scheduler.events.on("errors", function (error) {   console.log(error); // => Error structure});</code></pre>
+    
+
+
+
+                </div>
+            
+                <div class="member">
+                    
+
+
+    
+    <h4 class="name" id="~event:Success">
+        <a class="href-link" href="#~event:Success">#</a>
+        
+        <span class="code-name">
+            
+                Success
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Allows you to handle events with an SuccessLog structure (<a href="SuccessLog.html">SuccessLog</a>)</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="logger.ts.html" class="button">View Source</a>
+            <span>
+                <a href="logger.ts.html">logger.ts</a>, <a href="logger.ts.html#line37">line 37</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    
+        <pre class="prettyprint"><code>// Handling eventsconst scheduler = require(`simple-scheduler-task`);scheduler.events.on("executions", function (data) {   console.log(data); // => SuccessLog structure});</code></pre>
+    
+
+
+
+                </div>
+            
+                <div class="member">
+                    
+
+
+    
+    <h4 class="name" id="~event:Text">
+        <a class="href-link" href="#~event:Text">#</a>
+        
+        <span class="code-name">
+            
+                Text
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Allow you to receive text logs of the module's operation</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="logger.ts.html" class="button">View Source</a>
+            <span>
+                <a href="logger.ts.html">logger.ts</a>, <a href="logger.ts.html#line11">line 11</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    
+        <pre class="prettyprint"><code>// Handling logsconst scheduler = require(`simple-scheduler-task`);scheduler.events.on("logs", function (log) {   console.log(log); // => string});</code></pre>
+    
+
+
+
+                </div>
+            
+            </div>
+        </div>
+    
 </article>
 
 </section>
@@ -217,6 +542,16 @@ More about how events work: <a href="https://nodejs.org/api/events.html">https:/
 
 
             </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
             
         </div>
         <div id="side-nav" class="side-nav">

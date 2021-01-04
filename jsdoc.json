@@ -24,9 +24,8 @@
 		"cleverLinks": false,
 		"monospaceLinks": false,
 		"better-docs": {
-			"name": "SimleTaskScheduler documentation",
-			"title": "Documentation",
-			"hideGenerator": true
+			"name": "SimpleTaskScheduler documentation",
+			"title": "Documentation"
 		},
 		"search": true
 	}

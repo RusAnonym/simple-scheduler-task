@@ -11,28 +11,45 @@ import {
  * More about how events work: {@link https://nodejs.org/api/events.html}
  */
 
-/**
- * @event Error
- * @method .on("logs")
- * @description Allows you to handle events with an error structure ({@link ErrorLog})
- * @example
- * // Handling errors
- * const scheduler = require(`simple-scheduler-task`);
- * scheduler.events.on("errors", function (error) {
- *    console.log(error); // => Error structure
- * });
- */
-
 const Events = new Logger();
 
 const logger = {
+	/**
+	 * @event Text
+	 * @description Allow you to receive text logs of the module's operation
+	 * @example
+	 * // Handling logs
+	 * const scheduler = require(`simple-scheduler-task`);
+	 * scheduler.events.on("logs", function (log) {
+	 *    console.log(log); // => string
+	 * });
+	 */
 	text: (text: string) => {
 		return Events.emitText(text);
 	},
+	/**
+	 * @event Error
+	 * @description Allows you to handle events with an error structure ({@link ErrorLog})
+	 * @example
+	 * // Handling errors
+	 * const scheduler = require(`simple-scheduler-task`);
+	 * scheduler.events.on("errors", function (error) {
+	 *    console.log(error); // => Error structure
+	 * });
+	 */
 	error: (error: SchedulerErrorLog) => {
 		return Events.emitError(error);
 	},
-	success: (task: SchedulerInformLog) => {
+	/**
+	 * @event Success
+	 * @description Allows you to handle events with an SuccessLog structure ({@link SuccessLog})
+	 * @example
+	 * // Handling events
+	 * const scheduler = require(`simple-scheduler-task`);
+	 * scheduler.events.on("executions", function (data) {
+	 *    console.log(data); // => SuccessLog structure
+	 * });
+	 */ success: (task: SchedulerInformLog) => {
 		return Events.emitSuccess(task);
 	},
 };
