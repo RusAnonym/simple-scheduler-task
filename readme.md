@@ -26,4 +26,4 @@ const scheduler = require("simple-scheduler-task");
 
 # Documentation
 
-https://rusanonym.github.io/simple-scheduler-task/
+[Click](https://rusanonym.github.io/simple-scheduler-task/)
