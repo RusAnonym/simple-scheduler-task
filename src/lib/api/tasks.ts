@@ -141,4 +141,4 @@ function getFilterTasks(params: {
 	return findTasks.map(parseTask);
 }
 
-export { Task, add, getAllTasks, getFilterTasks };
+export { Task, add, getTaskByID, getAllTasks, getFilterTasks };
