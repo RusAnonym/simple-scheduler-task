@@ -46,7 +46,6 @@ function create(task: {
 		}, task.plannedTime - Number(new Date()));
 	}
 	utils.array.insert(tasks, newTaskIndex, newTask);
-	console.log(newTask);
 	return newTaskID;
 }
 
@@ -78,19 +77,25 @@ function remove(taskData: ITask) {
 
 async function execute(taskData: ITask): Promise<boolean> {
 	const task = taskData;
+	const currentDate = new Date();
 	if (!task) {
 		return false;
 	} else {
 		task.status = "works";
 		if (task.isInterval === true) {
-			task.plannedTime = Number(new Date()) + task.service.intervalTime;
+			task.plannedTime = Number(currentDate) + task.service.intervalTime;
 		}
 		const startExecute = performance.now();
 		try {
 			let response = await task.service.source();
-			task.status = "executed";
 			if (task.service.inform) {
 				const endExecute = performance.now();
+				task.service.triggeringQuantity += 1;
+				task.service.remainingTriggers -= 1;
+				task.status =
+					task.isInterval && task.service.remainingTriggers !== 0
+						? "await"
+						: "executed";
 				logger.success({
 					task: parseTask(task),
 					response: response,
@@ -100,6 +105,12 @@ async function execute(taskData: ITask): Promise<boolean> {
 		} catch (error) {
 			if (task.service.inform) {
 				const endExecute = performance.now();
+				task.service.triggeringQuantity += 1;
+				task.service.remainingTriggers -= 1;
+				task.status =
+					task.isInterval && task.service.remainingTriggers !== 0
+						? "await"
+						: "executed";
 				logger.error({
 					task: parseTask(task),
 					error: error,
@@ -110,17 +121,15 @@ async function execute(taskData: ITask): Promise<boolean> {
 			task.status = "await";
 			if (task.isInterval) {
 				if (task.service.infinityInterval === false) {
-					task.service.remainingTriggers--;
 					if (task.service.remainingTriggers === 0) {
 						remove(task);
 						return true;
 					}
 				}
-				task.service.triggeringQuantity += 1;
 				if (config.mode === "timeout") {
 					taskData.service.timeoutID = setTimeout(() => {
 						execute(taskData);
-					}, task.plannedTime - Number(new Date()));
+					}, task.plannedTime - Number(currentDate));
 				} else {
 					const taskIndex = tasks.findIndex((x) => x.id === taskData.id);
 					let newTaskIndex = tasks.findIndex(
@@ -132,6 +141,7 @@ async function execute(taskData: ITask): Promise<boolean> {
 					utils.array.move(tasks, taskIndex, newTaskIndex);
 				}
 			} else {
+				task.status = "executed";
 				remove(task);
 				return true;
 			}

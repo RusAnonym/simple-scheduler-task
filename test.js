@@ -4,7 +4,7 @@ new scheduler.tasks.Task({
 	plannedTime: new Date(),
 	isInterval: true,
 	intervalTimer: 1000,
-	intervalTriggers: 150,
+	intervalTriggers: 10,
 	inform: true,
 	source: function () {
 		console.log(`Hello from ${new Date()}`);
@@ -15,5 +15,3 @@ new scheduler.tasks.Task({
 scheduler.events.on("executions", function (data) {
 	console.log(data);
 });
-
-console.log(scheduler.settings.useInterval());
