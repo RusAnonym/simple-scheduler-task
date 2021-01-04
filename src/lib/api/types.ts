@@ -15,9 +15,17 @@ export interface inputTask {
 	type?: string;
 	/**
 	 * Additional parameters, to search tasks
+	 * <br/>
+	 * Only the types number, string, Date are available
 	 * @default {}
+	 * @example
+	 * {
+	 * 	"string": "Hello",
+	 * 	"number": 50,
+	 * 	"date": new Date()
+	 * }
 	 */
-	params?: Record<string, any>;
+	params?: Record<string, number | string | Date>;
 	/**
 	 * Informing about finish/error after task execution
 	 * @default false
@@ -38,11 +46,6 @@ export interface inputTask {
 	 * @default 0
 	 */
 	intervalTriggers?: number;
-	/**
-	 * Whether to save this task in automatic mode
-	 * @default false
-	 */
-	backup?: boolean;
 	/**
 	 * Function to be executed
 	 */

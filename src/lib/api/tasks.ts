@@ -34,7 +34,6 @@ class Task {
 			isInterval = false,
 			intervalTimer = Number(plannedTime) - Number(new Date()),
 			intervalTriggers = 0,
-			backup = false,
 			source,
 		} = params;
 
@@ -54,7 +53,6 @@ class Task {
 			isInterval: isInterval,
 			intervalTimer: intervalTimer,
 			intervalTriggers: intervalTriggers,
-			backup: backup,
 			service: false,
 			source: source,
 		});
@@ -73,7 +71,6 @@ function add(params: userTypes.inputTask) {
 		isInterval = false,
 		intervalTimer = Number(plannedTime) - Number(new Date()),
 		intervalTriggers = 0,
-		backup = false,
 		source,
 	} = params;
 
@@ -93,7 +90,6 @@ function add(params: userTypes.inputTask) {
 		isInterval: isInterval,
 		intervalTimer: intervalTimer,
 		intervalTriggers: intervalTriggers,
-		backup: backup,
 		service: false,
 		source: source,
 	});

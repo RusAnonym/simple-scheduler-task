@@ -12,7 +12,6 @@ function create(task: {
 	isInterval: boolean;
 	intervalTimer: number;
 	intervalTriggers: number;
-	backup: boolean;
 	service: boolean;
 	source: () => void;
 }): string {
@@ -28,7 +27,6 @@ function create(task: {
 		params: task.params,
 		status: "await",
 		isInterval: task.isInterval,
-		backup: task.backup,
 		service: {
 			timeoutID: null,
 			create: Number(new Date()),

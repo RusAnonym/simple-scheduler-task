@@ -8,7 +8,6 @@ export interface ITask {
 	params: Record<string, any>;
 	status: taskStatus;
 	isInterval: boolean;
-	backup: boolean;
 	service: {
 		timeoutID: NodeJS.Timer | null;
 		create: number;
