@@ -1,0 +1,266 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Documentation tasks.ts</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+             
+                <a href="index.html">
+                    <h1 class="navbar-item">SimpleTaskScheduler documentation</h1>
+                </a>
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    API Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+                <div class="search-wrapper">
+                    <input id="search" type="text" placeholder="Search docs..." class="input">
+                </div>
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-Logger.html">Logger</a></li><li><a href="module-Settings.html">Settings</a></li><li><a href="module-Tasks.html">Tasks</a></li></ul><h3>Classes</h3><ul><li><a href="module-Tasks-Task.html">Task</a></li></ul><h3>Interfaces</h3><ul><li><a href="ErrorLog.html">ErrorLog</a></li><li><a href="inputTask.html">inputTask</a></li><li><a href="parseTask.html">parseTask</a></li><li><a href="SuccessLog.html">SuccessLog</a></li></ul><h3>Events</h3><ul><li><a href="module-Logger.html#~event:Error">Error</a></li><li><a href="module-Logger.html#~event:Success">Success</a></li><li><a href="module-Logger.html#~event:Text">Text</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>tasks.ts</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { ITask, IParseTask } from "./../../types/tasks";
+import { tasks } from "../core";
+import { create, parseTask } from "../tasks";
+import * as userTypes from "./types";
+
+/**
+ * @module Tasks
+ * @description Methods for interacting with tasks
+ * @example
+ * const scheduler = require(`simple-scheduler-task`);
+ */
+
+/**
+ * @class
+ * @classdesc This is a task constructor
+ * @example
+ * new scheduler.tasks.Task({
+ * 	plannedTime: Number(new Date()) + 5 * 60 * 1000,
+ * 	source: function () {
+ * 		console.log(`Hey`);
+ * 	}
+ * });
+ */
+class Task {
+	/**
+	 * This is task constructor
+	 * @param {Object} params {@link inputTask}
+	 */
+	constructor(params: userTypes.inputTask) {
+		const {
+			plannedTime,
+			type = "missing",
+			inform = false,
+			isInterval = false,
+			intervalTimer = Number(plannedTime) - Number(new Date()),
+			intervalTriggers = 0,
+			source,
+		} = params;
+
+		if (
+			!plannedTime ||
+			!source ||
+			new Date(plannedTime).toString() === "Invalid Date"
+		) {
+			throw new Error("One of the required parameters is missing or incorrect");
+		}
+
+		return create({
+			plannedTime: Number(plannedTime),
+			type: type,
+			params: params.params || {},
+			inform: inform,
+			isInterval: isInterval,
+			intervalTimer: intervalTimer,
+			intervalTriggers: intervalTriggers,
+			service: false,
+			source: source,
+		});
+	}
+}
+
+/**
+ * This is a function that adds a new task, analogous to new Task
+ * @param {Object} params {@link inputTask}
+ */
+function add(params: userTypes.inputTask) {
+	const {
+		plannedTime,
+		type = "missing",
+		inform = false,
+		isInterval = false,
+		intervalTimer = Number(plannedTime) - Number(new Date()),
+		intervalTriggers = 0,
+		source,
+	} = params;
+
+	if (
+		!plannedTime ||
+		!source ||
+		new Date(plannedTime).toString() === "Invalid Date"
+	) {
+		throw new Error("One of the required parameters is missing or incorrect");
+	}
+
+	return create({
+		plannedTime: Number(plannedTime),
+		type: type,
+		params: params.params || {},
+		inform: inform,
+		isInterval: isInterval,
+		intervalTimer: intervalTimer,
+		intervalTriggers: intervalTriggers,
+		service: false,
+		source: source,
+	});
+}
+
+/**
+ * Allows you to get a list of all scheduled tasks
+ * @example
+ * scheduler.task.getAllTasks(); // => Array with all tasks
+ */
+function getAllTasks(): IParseTask[] {
+	return tasks.filter((task) => task.hidden !== true).map(parseTask);
+}
+
+/**
+ * Allows you to get the task by its ID
+ * @param {taskId} - ID of task
+ */
+function getTaskByID(taskId: string): IParseTask {
+	let task = tasks.find((x) => x.id === taskId);
+	if (!task) {
+		throw new Error(`No task with this ID was found`);
+	} else {
+		return parseTask(task);
+	}
+}
+
+/**
+ * @param {Object} params - Set of parameters to filter tasks
+ * @param {string} params.type - Type of task
+ * @param {Object} params.params - Additional parameters, to search tasks
+ */
+function getFilterTasks(params: {
+	type?: string;
+	params?: Record&lt;string, any>;
+}) {
+	let findTasks: ITask[] = [];
+	if (params.type) {
+		findTasks = tasks.filter((x) => x.type === params.type);
+	}
+	findTasks.length === 0 ? (findTasks = tasks) : null;
+	if (params.params) {
+		findTasks.filter((x) => x.params === params.params);
+	}
+	return findTasks.map(parseTask);
+}
+
+export { Task, add, getTaskByID, getAllTasks, getFilterTasks };
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+<script src="scripts/search.js"> </script>
+
+</body>
+</html>

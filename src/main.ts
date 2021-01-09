@@ -1,19 +1,7 @@
-"use strict";
-import { performance } from "perf_hooks";
-import * as core from "./plugins/core";
+import * as core from "./lib/core";
 
-(async function SchedulerTaskStart() {
-	let start = performance.now();
-	core.config.reservedType += await core.internal.getRandomTaskID();
-	await core.internal.addTaskToCheckCompletedTask();
-	await core.internal.startInterval();
-	core.logger.text(`Start in ${(performance.now() - start).toFixed(2)}ms`);
-	return 0;
-})();
+const settings = core.settings;
+const tasks = core.TasksAPI;
+const events = core.Events;
 
-let tasks = core.tasks;
-let settings = core.settings;
-let events = core.Events;
-let backup = core.backup;
-
-export default { tasks, settings, events, backup };
+export { settings, tasks, events };
