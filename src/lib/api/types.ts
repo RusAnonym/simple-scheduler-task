@@ -9,7 +9,7 @@ export interface inputTask {
 	 */
 	plannedTime: Date | number;
 	/**
-	 * Type of task, does not influence anything, but you can use it to get the list of tasks with the selected type
+	 * Type of task, does not influence unknownthing, but you can use it to get the list of tasks with the selected type
 	 * @default missing
 	 */
 	type?: string;
@@ -68,7 +68,7 @@ export interface parseTask {
 	/**
 	 * Set of task parameters
 	 */
-	params: Record<string, any>;
+	params: Record<string, unknown>;
 	/**
 	 * Current task status
 	 */
@@ -105,7 +105,7 @@ export interface parseTask {
 	/**
 	 * The function the task should perform
 	 */
-	source: () => Promise<any> | any;
+	source: () => Promise<unknown> | unknown;
 }
 
 /**
@@ -139,7 +139,7 @@ export interface SuccessLog {
 	/**
 	 * The value returned by the executed function
 	 */
-	response: any;
+	response: unknown;
 	/**
 	 * The number of milliseconds spent on the function
 	 */

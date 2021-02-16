@@ -5,14 +5,14 @@ export interface ITask {
 	id: string;
 	type: string;
 	hidden: boolean;
-	params: Record<string, any>;
+	params: Record<string, unknown>;
 	status: taskStatus;
 	isInterval: boolean;
 	service: {
 		timeoutID: NodeJS.Timer | null;
 		create: number;
 		intervalTime: number;
-		source: () => Promise<any> | any;
+		source: () => Promise<unknown> | unknown;
 		inform: boolean;
 		infinityInterval: boolean;
 		triggeringQuantity: number;
@@ -23,7 +23,7 @@ export interface ITask {
 export interface IParseTask {
 	id: string;
 	type: string;
-	params: Record<string, any>;
+	params: Record<string, unknown>;
 	status: string;
 	inform: boolean;
 	isInterval: boolean;
@@ -33,5 +33,5 @@ export interface IParseTask {
 		remainingTriggers: number;
 	};
 	nextExecute: Date;
-	source: () => Promise<any> | any;
+	source: () => Promise<unknown> | unknown;
 }

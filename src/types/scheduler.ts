@@ -4,7 +4,7 @@ import { ITask, IParseTask } from "./tasks";
 export interface SchedulerConfig {
 	type: string;
 	work: boolean;
-	interval: any;
+	interval: unknown;
 	intervalMS: number;
 	reservedType: string;
 	scheduledTasks: Array<ITask>;
@@ -12,7 +12,7 @@ export interface SchedulerConfig {
 
 export interface SchedulerInformLog {
 	task: IParseTask;
-	response: any;
+	response: unknown;
 	executionTime: number;
 }
 

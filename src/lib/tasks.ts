@@ -1,3 +1,5 @@
+/* eslint-disable no-unsafe-finally */
+
 import { ITask, IParseTask } from "./../types/tasks";
 import * as utils from "./utils";
 import { config, tasks } from "./core";
@@ -7,7 +9,7 @@ import { logger } from "./api/logger";
 function create(task: {
 	plannedTime: number;
 	type: string;
-	params: Record<string, any>;
+	params: Record<string, unknown>;
 	inform: boolean;
 	isInterval: boolean;
 	intervalTimer: number;
@@ -19,7 +21,7 @@ function create(task: {
 	let newTaskIndex = tasks.findIndex((x) => x.plannedTime >= task.plannedTime);
 	newTaskIndex === -1 ? (newTaskIndex = tasks.length) : null;
 	const newTaskID = utils.generateID();
-	let newTask: ITask = {
+	const newTask: ITask = {
 		plannedTime: task.plannedTime,
 		id: newTaskID,
 		type: task.type,
@@ -48,7 +50,7 @@ function create(task: {
 }
 
 function parseTask(taskData: ITask): IParseTask {
-	let output: IParseTask = {
+	const output: IParseTask = {
 		id: taskData.id,
 		type: taskData.type,
 		params: taskData.params,
@@ -83,7 +85,7 @@ async function execute(taskData: ITask): Promise<boolean> {
 		task.status = "works";
 		const startExecute = performance.now();
 		try {
-			let response = await task.service.source();
+			const response = await task.service.source();
 			if (task.service.inform) {
 				const endExecute = performance.now();
 				task.service.triggeringQuantity += 1;

@@ -63,7 +63,7 @@ class Task {
  * This is a function that adds a new task, analogous to new Task
  * @param {Object} params {@link inputTask}
  */
-function add(params: userTypes.inputTask) {
+function add(params: userTypes.inputTask): string {
 	const {
 		plannedTime,
 		type = "missing",
@@ -109,7 +109,7 @@ function getAllTasks(): IParseTask[] {
  * @param {taskId} - ID of task
  */
 function getTaskByID(taskId: string): IParseTask {
-	let task = tasks.find((x) => x.id === taskId);
+	const task = tasks.find((x) => x.id === taskId);
 	if (!task) {
 		throw new Error(`No task with this ID was found`);
 	} else {
@@ -124,8 +124,8 @@ function getTaskByID(taskId: string): IParseTask {
  */
 function getFilterTasks(params: {
 	type?: string;
-	params?: Record<string, any>;
-}) {
+	params?: Record<string, unknown>;
+}): IParseTask[] {
 	let findTasks: ITask[] = [];
 	if (params.type) {
 		findTasks = tasks.filter((x) => x.type === params.type);

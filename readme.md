@@ -18,12 +18,6 @@ Install by Yarn
 yarn add simple-scheduler-task
 ```
 
-## Initialization
-
-```js
-const scheduler = require("simple-scheduler-task");
-```
-
 # Documentation
 
 [Click](https://rusanonym.github.io/simple-scheduler-task/)

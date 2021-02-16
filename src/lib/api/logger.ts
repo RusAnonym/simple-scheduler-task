@@ -24,7 +24,7 @@ const logger = {
 	 *    console.log(log); // => string
 	 * });
 	 */
-	text: (text: string) => {
+	text(text: string): void {
 		return Events.emitText(text);
 	},
 	/**
@@ -37,7 +37,7 @@ const logger = {
 	 *    console.log(error); // => Error structure
 	 * });
 	 */
-	error: (error: SchedulerErrorLog) => {
+	error(error: SchedulerErrorLog): void {
 		return Events.emitError(error);
 	},
 	/**
@@ -49,7 +49,7 @@ const logger = {
 	 * scheduler.events.on("executions", function (data) {
 	 *    console.log(data); // => SuccessLog structure
 	 * });
-	 */ success: (task: SchedulerInformLog) => {
+	 */ success(task: SchedulerInformLog): void {
 		return Events.emitSuccess(task);
 	},
 };

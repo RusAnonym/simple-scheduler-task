@@ -3,7 +3,7 @@ import * as TasksAPI from "./api/tasks";
 import settings from "./api/settings";
 import { logger, Events } from "./api/logger";
 
-let config: {
+const config: {
 	mode: "timeout" | "interval" | "not_work";
 	interval: NodeJS.Timer | null;
 	intervalMS: number;
@@ -13,7 +13,7 @@ let config: {
 	intervalMS: 1000,
 };
 
-let tasks: ITask[] = [];
+const tasks: ITask[] = [];
 
 (function startScheduler() {
 	settings.useInterval();
