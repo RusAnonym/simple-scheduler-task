@@ -8,7 +8,7 @@ function startInterval(): boolean {
 		stopTimeout();
 		config.interval = setInterval(() => {
 			const now = Number(new Date());
-			let maximalIndex = tasks.findIndex((x) => x.plannedTime > now);
+			const maximalIndex = tasks.findIndex((x) => x.plannedTime > now);
 			if (maximalIndex === -1) {
 				tasks.map((task) => {
 					if (now >= task.plannedTime && task.status === "await") {

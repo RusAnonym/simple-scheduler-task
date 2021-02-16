@@ -109,7 +109,7 @@ function getAllTasks(): IParseTask[] {
  * @param {taskId} - ID of task
  */
 function getTaskByID(taskId: string): IParseTask {
-	let task = tasks.find((x) => x.id === taskId);
+	const task = tasks.find((x) => x.id === taskId);
 	if (!task) {
 		throw new Error(`No task with this ID was found`);
 	} else {
