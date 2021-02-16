@@ -1,3 +1,5 @@
+/* eslint-disable no-unsafe-finally */
+
 import { ITask, IParseTask } from "./../types/tasks";
 import * as utils from "./utils";
 import { config, tasks } from "./core";
@@ -7,7 +9,7 @@ import { logger } from "./api/logger";
 function create(task: {
 	plannedTime: number;
 	type: string;
-	params: Record<string, any>;
+	params: Record<string, unknown>;
 	inform: boolean;
 	isInterval: boolean;
 	intervalTimer: number;

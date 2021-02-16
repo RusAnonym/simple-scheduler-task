@@ -1,17 +1,19 @@
+import { ITask } from "./../types/tasks";
 import { tasks } from "./core";
 
 const array = {
-	insert: function (inputArray: any[], index: number, element: any) {
+	insert: function (inputArray: ITask[], index: number, element: ITask): void {
 		inputArray.splice(index, 0, element);
-		return true;
+		return;
 	},
-	move: function (inputArray: any[], from: number, to: number) {
+	move: function (inputArray: ITask[], from: number, to: number): void {
 		const startIndex = from < 0 ? inputArray.length + from : from;
 		if (startIndex >= 0 && startIndex < inputArray.length) {
 			const endIndex = to < 0 ? inputArray.length + to : to;
 			const [item] = inputArray.splice(from, 1);
 			inputArray.splice(endIndex, 0, item);
 		}
+		return;
 	},
 };
 
