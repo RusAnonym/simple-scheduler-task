@@ -3,7 +3,7 @@
     "lib": ["DOM", "ES6"],
     "target": "ES2019",
     "module": "ESNext",
-    "outDir": "./out/",
+    "outDir": "./dist/",
     "moduleResolution": "Node",
     "declaration": true,
     "strict": true,
