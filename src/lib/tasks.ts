@@ -6,7 +6,7 @@ import { config, tasks } from "./core";
 import { performance } from "perf_hooks";
 import { logger } from "./api/logger";
 
-function create(task: {
+const create = (task: {
 	plannedTime: number;
 	type: string;
 	params: Record<string, unknown>;
@@ -16,7 +16,7 @@ function create(task: {
 	intervalTriggers: number;
 	service: boolean;
 	source: () => void;
-}): string {
+}): string => {
 	task.service === true ? (task.type = "scheduler_service_" + task.type) : null;
 	let newTaskIndex = tasks.findIndex((x) => x.plannedTime >= task.plannedTime);
 	newTaskIndex === -1 ? (newTaskIndex = tasks.length) : null;
@@ -47,9 +47,9 @@ function create(task: {
 	}
 	utils.array.insert(tasks, newTaskIndex, newTask);
 	return newTaskID;
-}
+};
 
-function parseTask(taskData: ITask): IParseTask {
+const parseTask = (taskData: ITask): IParseTask => {
 	const output: IParseTask = {
 		id: taskData.id,
 		type: taskData.type,
@@ -68,15 +68,15 @@ function parseTask(taskData: ITask): IParseTask {
 		};
 	}
 	return output;
-}
+};
 
-function remove(taskData: ITask): true {
+const remove = (taskData: ITask): true => {
 	const index = tasks.indexOf(taskData);
 	tasks.splice(index, 1);
 	return true;
-}
+};
 
-async function execute(taskData: ITask): Promise<boolean> {
+const execute = async (taskData: ITask): Promise<boolean> => {
 	const task = taskData;
 	const currentDate = new Date();
 	if (!task) {
@@ -146,6 +146,6 @@ async function execute(taskData: ITask): Promise<boolean> {
 	}
 
 	return true;
-}
+};
 
 export { create, execute, parseTask, remove };

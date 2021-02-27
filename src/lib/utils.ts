@@ -17,7 +17,7 @@ const array = {
 	},
 };
 
-function generateID(): string {
+const generateID = (): string => {
 	let id = "";
 	const idWords = `defbca123456890`.split("");
 	for (let i = 0; i < 16; i++) {

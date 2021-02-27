@@ -12,7 +12,7 @@ import * as settings from "../settings";
  * @example
  * scheduler.settings.useInterval(); // => true
  */
-function useInterval(): boolean {
+const useInterval = (): boolean => {
 	return settings.startInterval();
 }
 
@@ -21,7 +21,7 @@ function useInterval(): boolean {
  * @example
  * scheduler.settings.useTimeouts(); // => true
  */
-function useTimeouts(): boolean {
+const useTimeouts = (): boolean => {
 	return settings.startTimeout();
 }
 

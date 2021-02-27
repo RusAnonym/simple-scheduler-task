@@ -1,7 +1,7 @@
 import { tasks, config } from "./core";
 import * as TasksAPI from "./tasks";
 
-function startInterval(): boolean {
+const startInterval = (): boolean => {
 	if (config.mode === "interval") {
 		return false;
 	} else {
@@ -26,9 +26,9 @@ function startInterval(): boolean {
 		config.mode = "interval";
 		return true;
 	}
-}
+};
 
-function startTimeout(): boolean {
+const startTimeout = (): boolean => {
 	if (config.mode === "timeout") {
 		return false;
 	} else {
@@ -45,18 +45,18 @@ function startTimeout(): boolean {
 		}
 		return true;
 	}
-}
+};
 
-function stopInterval(): boolean {
+const stopInterval = (): boolean => {
 	if (config.mode === "interval" && config.interval !== null) {
 		clearInterval(config.interval);
 		return true;
 	} else {
 		return false;
 	}
-}
+};
 
-function stopTimeout(): boolean {
+const stopTimeout = (): boolean => {
 	if (config.mode === "timeout") {
 		for (const task of tasks) {
 			if (task.service.timeoutID !== null) {
@@ -68,6 +68,6 @@ function stopTimeout(): boolean {
 	} else {
 		return false;
 	}
-}
+};
 
 export { startInterval, startTimeout, stopInterval, stopTimeout };
