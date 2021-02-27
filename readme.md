@@ -20,4 +20,4 @@ yarn add simple-scheduler-task
 
 # Documentation
 
-[Click](https://rusanonym.github.io/simple-scheduler-task/)
+[Click](https://rusanonym.github.io/simple-scheduler-task/index)

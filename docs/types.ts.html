@@ -101,8 +101,9 @@
 export interface inputTask {
 	/**
 	 * The time when the task should be completed
+	 * @default new Date()
 	 */
-	plannedTime: Date | number;
+	plannedTime?: Date | number;
 	/**
 	 * Type of task, does not influence unknownthing, but you can use it to get the list of tasks with the selected type
 	 * @default missing

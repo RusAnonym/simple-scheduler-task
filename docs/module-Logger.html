@@ -312,7 +312,11 @@ More about how events work: <a href="https://nodejs.org/api/events.html">https:/
     <h5>Example</h5>
     
     
-        <pre class="prettyprint"><code>// Handling errorsconst scheduler = require(`simple-scheduler-task`);scheduler.events.on("errors", function (error) {   console.log(error); // => Error structure});</code></pre>
+        <pre class="prettyprint"><code>// Handling errors
+const scheduler = require(`simple-scheduler-task`);
+scheduler.events.on("errors", function (error) {
+   console.log(error); // => Error structure
+});</code></pre>
     
 
 
@@ -418,7 +422,11 @@ More about how events work: <a href="https://nodejs.org/api/events.html">https:/
     <h5>Example</h5>
     
     
-        <pre class="prettyprint"><code>// Handling eventsconst scheduler = require(`simple-scheduler-task`);scheduler.events.on("executions", function (data) {   console.log(data); // => SuccessLog structure});</code></pre>
+        <pre class="prettyprint"><code>// Handling events
+const scheduler = require(`simple-scheduler-task`);
+scheduler.events.on("executions", function (data) {
+   console.log(data); // => SuccessLog structure
+});</code></pre>
     
 
 
@@ -524,7 +532,11 @@ More about how events work: <a href="https://nodejs.org/api/events.html">https:/
     <h5>Example</h5>
     
     
-        <pre class="prettyprint"><code>// Handling logsconst scheduler = require(`simple-scheduler-task`);scheduler.events.on("logs", function (log) {   console.log(log); // => string});</code></pre>
+        <pre class="prettyprint"><code>// Handling logs
+const scheduler = require(`simple-scheduler-task`);
+scheduler.events.on("logs", function (log) {
+   console.log(log); // => string
+});</code></pre>
     
 
 
