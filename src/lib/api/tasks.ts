@@ -28,7 +28,7 @@ class Task {
 	 */
 	constructor(params: userTypes.inputTask) {
 		const {
-			plannedTime,
+			plannedTime = new Date(),
 			type = "missing",
 			inform = false,
 			isInterval = false,
@@ -38,7 +38,7 @@ class Task {
 		} = params;
 
 		if (
-			!plannedTime ||
+			(!isInterval && !plannedTime) ||
 			!source ||
 			new Date(plannedTime).toString() === "Invalid Date"
 		) {
@@ -65,7 +65,7 @@ class Task {
  */
 function add(params: userTypes.inputTask): string {
 	const {
-		plannedTime,
+		plannedTime = new Date(),
 		type = "missing",
 		inform = false,
 		isInterval = false,
@@ -75,7 +75,7 @@ function add(params: userTypes.inputTask): string {
 	} = params;
 
 	if (
-		!plannedTime ||
+		(!isInterval && !plannedTime) ||
 		!source ||
 		new Date(plannedTime).toString() === "Invalid Date"
 	) {
