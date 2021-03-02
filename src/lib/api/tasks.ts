@@ -1,6 +1,6 @@
 import { ITask, IParseTask } from "./../../types/tasks";
 import { tasks } from "../core";
-import { create, parseTask } from "../tasks";
+import { create, parseTask, execute } from "../tasks";
 import * as userTypes from "./types";
 
 /**
@@ -131,6 +131,13 @@ class Task {
 	 */
 	public unpause(): void {
 		this.task.status = "await";
+	}
+
+	/**
+	 * Allows you to force the task
+	 */
+	public async execute(): Promise<void> {
+		await execute(this.task);
 	}
 }
 

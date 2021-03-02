@@ -90,8 +90,8 @@ const execute = async (taskData: ITask): Promise<boolean> => {
 			const response = await task.service.source();
 			if (task.service.inform) {
 				const endExecute = performance.now();
-				task.service.triggeringQuantity += 1;
-				task.service.remainingTriggers -= 1;
+				++task.service.triggeringQuantity;
+				--task.service.remainingTriggers;
 				task.status =
 					task.isInterval && task.service.remainingTriggers !== 0
 						? "await"
@@ -105,8 +105,8 @@ const execute = async (taskData: ITask): Promise<boolean> => {
 		} catch (error) {
 			if (task.service.inform) {
 				const endExecute = performance.now();
-				task.service.triggeringQuantity += 1;
-				task.service.remainingTriggers -= 1;
+				++task.service.triggeringQuantity;
+				--task.service.remainingTriggers;
 				task.status =
 					task.isInterval && task.service.remainingTriggers !== 0
 						? "await"
