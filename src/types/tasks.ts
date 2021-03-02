@@ -1,4 +1,4 @@
-type taskStatus = "await" | "works" | "executed";
+type taskStatus = "await" | "works" | "pause" | "executed";
 
 export interface ITask {
 	plannedTime: number;
@@ -24,7 +24,7 @@ export interface IParseTask {
 	id: string;
 	type: string;
 	params: Record<string, unknown>;
-	status: string;
+	status: taskStatus;
 	inform: boolean;
 	isInterval: boolean;
 	intervalData?: {

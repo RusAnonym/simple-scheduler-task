@@ -145,7 +145,7 @@ export interface inputTask {
 	/**
 	 * Function to be executed
 	 */
-	source: () => void;
+	source: () => Promise&lt;unknown> | unknown;
 }
 
 /**

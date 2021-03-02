@@ -6,7 +6,7 @@ import { config, tasks } from "./core";
 import { performance } from "perf_hooks";
 import { logger } from "./api/logger";
 
-function create(task: {
+const create = (task: {
 	plannedTime: number;
 	type: string;
 	params: Record<string, unknown>;
@@ -16,10 +16,12 @@ function create(task: {
 	intervalTriggers: number;
 	service: boolean;
 	source: () => void;
-}): string {
+}): string => {
 	task.service === true ? (task.type = "scheduler_service_" + task.type) : null;
 	let newTaskIndex = tasks.findIndex((x) => x.plannedTime >= task.plannedTime);
+
 	newTaskIndex === -1 ? (newTaskIndex = tasks.length) : null;
+
 	const newTaskID = utils.generateID();
 	const newTask: ITask = {
 		plannedTime: task.plannedTime,
@@ -47,9 +49,9 @@ function create(task: {
 	}
 	utils.array.insert(tasks, newTaskIndex, newTask);
 	return newTaskID;
-}
+};
 
-function parseTask(taskData: ITask): IParseTask {
+const parseTask = (taskData: ITask): IParseTask => {
 	const output: IParseTask = {
 		id: taskData.id,
 		type: taskData.type,
@@ -68,15 +70,15 @@ function parseTask(taskData: ITask): IParseTask {
 		};
 	}
 	return output;
-}
+};
 
-function remove(taskData: ITask): true {
+const remove = (taskData: ITask): true => {
 	const index = tasks.indexOf(taskData);
 	tasks.splice(index, 1);
 	return true;
-}
+};
 
-async function execute(taskData: ITask): Promise<boolean> {
+const execute = async (taskData: ITask): Promise<boolean> => {
 	const task = taskData;
 	const currentDate = new Date();
 	if (!task) {
@@ -88,8 +90,8 @@ async function execute(taskData: ITask): Promise<boolean> {
 			const response = await task.service.source();
 			if (task.service.inform) {
 				const endExecute = performance.now();
-				task.service.triggeringQuantity += 1;
-				task.service.remainingTriggers -= 1;
+				++task.service.triggeringQuantity;
+				--task.service.remainingTriggers;
 				task.status =
 					task.isInterval && task.service.remainingTriggers !== 0
 						? "await"
@@ -103,8 +105,8 @@ async function execute(taskData: ITask): Promise<boolean> {
 		} catch (error) {
 			if (task.service.inform) {
 				const endExecute = performance.now();
-				task.service.triggeringQuantity += 1;
-				task.service.remainingTriggers -= 1;
+				++task.service.triggeringQuantity;
+				--task.service.remainingTriggers;
 				task.status =
 					task.isInterval && task.service.remainingTriggers !== 0
 						? "await"
@@ -130,11 +132,11 @@ async function execute(taskData: ITask): Promise<boolean> {
 					}, task.plannedTime - Number(currentDate));
 				} else {
 					const taskIndex = tasks.findIndex((x) => x.id === taskData.id);
-					let newTaskIndex = tasks.findIndex(
+					let newTaskIndex = tasks.findIndex(	
 						(x) => x.plannedTime >= task.plannedTime && x.id !== task.id,
 					);
 					newTaskIndex + 1 !== tasks.length && newTaskIndex > 0
-						? newTaskIndex--
+						? --newTaskIndex
 						: null;
 					utils.array.move(tasks, taskIndex, newTaskIndex);
 				}
@@ -146,6 +148,6 @@ async function execute(taskData: ITask): Promise<boolean> {
 	}
 
 	return true;
-}
+};
 
 export { create, execute, parseTask, remove };

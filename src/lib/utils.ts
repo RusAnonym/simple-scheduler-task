@@ -17,14 +17,14 @@ const array = {
 	},
 };
 
-function generateID(): string {
-	let id = "";
-	const idWords = `defbca123456890`.split("");
+const generateID = (): string => {
+	let ID = "";
+	const allowedWords = `defbca123456890`.split("");
 	for (let i = 0; i < 16; i++) {
-		id += idWords[Math.floor(Math.random() * idWords.length)];
+		ID += allowedWords[Math.floor(Math.random() * allowedWords.length)];
 	}
-	if (!tasks.find((x) => x.id === id)) {
-		return id;
+	if (!tasks.find((x) => x.id === ID)) {
+		return ID;
 	} else {
 		return generateID();
 	}
