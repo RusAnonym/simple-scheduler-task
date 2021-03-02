@@ -1,2 +1,5 @@
 src
 docs
+test.js
+yarn.lock
+yarn-error.log
