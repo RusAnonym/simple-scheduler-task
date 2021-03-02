@@ -1,4 +1,4 @@
-type taskStatus = "await" | "works" | "executed";
+type taskStatus = "await" | "works" | "pause" | "executed";
 
 export interface ITask {
 	plannedTime: number;
