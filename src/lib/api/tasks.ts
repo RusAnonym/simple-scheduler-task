@@ -118,6 +118,20 @@ class Task {
 	public get status(): string {
 		return this.task.status;
 	}
+
+	/**
+	 * Allows you to pause a task
+	 */
+	public pause(): void {
+		this.task.status = "pause";
+	}
+
+	/**
+	 * Allows you to resume the task
+	 */
+	public unpause(): void {
+		this.task.status = "await";
+	}
 }
 
 /**
