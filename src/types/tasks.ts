@@ -24,7 +24,7 @@ export interface IParseTask {
 	id: string;
 	type: string;
 	params: Record<string, unknown>;
-	status: string;
+	status: taskStatus;
 	inform: boolean;
 	isInterval: boolean;
 	intervalData?: {

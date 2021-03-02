@@ -19,7 +19,9 @@ const create = (task: {
 }): string => {
 	task.service === true ? (task.type = "scheduler_service_" + task.type) : null;
 	let newTaskIndex = tasks.findIndex((x) => x.plannedTime >= task.plannedTime);
+
 	newTaskIndex === -1 ? (newTaskIndex = tasks.length) : null;
+
 	const newTaskID = utils.generateID();
 	const newTask: ITask = {
 		plannedTime: task.plannedTime,
@@ -130,11 +132,11 @@ const execute = async (taskData: ITask): Promise<boolean> => {
 					}, task.plannedTime - Number(currentDate));
 				} else {
 					const taskIndex = tasks.findIndex((x) => x.id === taskData.id);
-					let newTaskIndex = tasks.findIndex(
+					let newTaskIndex = tasks.findIndex(	
 						(x) => x.plannedTime >= task.plannedTime && x.id !== task.id,
 					);
 					newTaskIndex + 1 !== tasks.length && newTaskIndex > 0
-						? newTaskIndex--
+						? --newTaskIndex
 						: null;
 					utils.array.move(tasks, taskIndex, newTaskIndex);
 				}

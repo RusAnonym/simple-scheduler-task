@@ -22,6 +22,7 @@ import * as userTypes from "./types";
  * });
  */
 class Task {
+	private TaskID: string;
 	/**
 	 * This is task constructor
 	 * @param {Object} params {@link inputTask}
@@ -45,7 +46,7 @@ class Task {
 			throw new Error("One of the required parameters is missing or incorrect");
 		}
 
-		return create({
+		this.TaskID = create({
 			plannedTime: Number(plannedTime),
 			type: type,
 			params: params.params || {},
@@ -56,6 +57,35 @@ class Task {
 			service: false,
 			source: source,
 		});
+	}
+
+	private get task(): ITask {
+		const task = tasks.find((x) => x.id === this.TaskID);
+		if (task) {
+			return task;
+		}
+		throw new Error("Task not found");
+	}
+
+	/**
+	 * Allows you to find out task data
+	 */
+	public get data(): IParseTask {
+		return parseTask(this.task);
+	}
+
+	/**
+	 * Allows you to know the task ID
+	 */
+	public get ID(): string {
+		return this.TaskID;
+	}
+
+	/**
+	 * Allows you to know the status of the task
+	 */
+	public get status(): string {
+		return this.task.status;
 	}
 }
 
