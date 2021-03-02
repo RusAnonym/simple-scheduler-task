@@ -14,49 +14,80 @@ import * as userTypes from "./types";
  * @class
  * @classdesc This is a task constructor
  * @example
- * new scheduler.tasks.Task({
+ * const { Task } = require(`simple-scheduler-task`);
+ *
+ * new Task({
  * 	plannedTime: Number(new Date()) + 5 * 60 * 1000,
  * 	source: function () {
  * 		console.log(`Hey`);
  * 	}
  * });
  */
+
 class Task {
 	private TaskID: string;
 	/**
 	 * This is task constructor
 	 * @param {Object} params {@link inputTask}
 	 */
-	constructor(params: userTypes.inputTask) {
-		const {
-			plannedTime = new Date(),
-			type = "missing",
-			inform = false,
-			isInterval = false,
-			intervalTimer = Number(plannedTime) - Number(new Date()),
-			intervalTriggers = 0,
-			source,
-		} = params;
+	constructor(
+		params: userTypes.inputTask | (() => Promise<unknown> | unknown),
+		plannedTime?: Date | number,
+	) {
+		if (typeof params === "function") {
+			if (
+				(!params && !plannedTime) ||
+				new Date(plannedTime || "").toString() === "Invalid Date"
+			) {
+				throw new Error(
+					"One of the required parameters is missing or incorrect",
+				);
+			}
 
-		if (
-			(!isInterval && !plannedTime) ||
-			!source ||
-			new Date(plannedTime).toString() === "Invalid Date"
-		) {
-			throw new Error("One of the required parameters is missing or incorrect");
+			this.TaskID = create({
+				plannedTime: Number(plannedTime),
+				type: "missing",
+				params: {},
+				inform: false,
+				isInterval: false,
+				intervalTimer: Number(plannedTime) - Number(new Date()),
+				intervalTriggers: 0,
+				service: false,
+				source: params,
+			});
+		} else {
+			const {
+				plannedTime = new Date(),
+				type = "missing",
+				inform = false,
+				isInterval = false,
+				intervalTimer = Number(plannedTime) - Number(new Date()),
+				intervalTriggers = 0,
+				source,
+			} = params;
+
+			if (
+				(!isInterval && !plannedTime) ||
+				!source ||
+				new Date(plannedTime).toString() === "Invalid Date"
+			) {
+				throw new Error(
+					"One of the required parameters is missing or incorrect",
+				);
+			}
+
+			this.TaskID = create({
+				plannedTime: Number(plannedTime),
+				type: type,
+				params: params.params || {},
+				inform: inform,
+				isInterval: isInterval,
+				intervalTimer: intervalTimer,
+				intervalTriggers: intervalTriggers,
+				service: false,
+				source: source,
+			});
 		}
-
-		this.TaskID = create({
-			plannedTime: Number(plannedTime),
-			type: type,
-			params: params.params || {},
-			inform: inform,
-			isInterval: isInterval,
-			intervalTimer: intervalTimer,
-			intervalTriggers: intervalTriggers,
-			service: false,
-			source: source,
-		});
 	}
 
 	private get task(): ITask {
@@ -93,36 +124,11 @@ class Task {
  * This is a function that adds a new task, analogous to new Task
  * @param {Object} params {@link inputTask}
  */
-const add = (params: userTypes.inputTask): string => {
-	const {
-		plannedTime = new Date(),
-		type = "missing",
-		inform = false,
-		isInterval = false,
-		intervalTimer = Number(plannedTime) - Number(new Date()),
-		intervalTriggers = 0,
-		source,
-	} = params;
-
-	if (
-		(!isInterval && !plannedTime) ||
-		!source ||
-		new Date(plannedTime).toString() === "Invalid Date"
-	) {
-		throw new Error("One of the required parameters is missing or incorrect");
-	}
-
-	return create({
-		plannedTime: Number(plannedTime),
-		type: type,
-		params: params.params || {},
-		inform: inform,
-		isInterval: isInterval,
-		intervalTimer: intervalTimer,
-		intervalTriggers: intervalTriggers,
-		service: false,
-		source: source,
-	});
+const add = (
+	params: userTypes.inputTask | (() => Promise<never> | never),
+	plannedTime?: Date | number,
+): string => {
+	return new Task(params, plannedTime ? plannedTime : undefined).ID;
 };
 
 /**

@@ -16,7 +16,7 @@ const startInterval = (): boolean => {
 					}
 				});
 			} else {
-				for (let index = 0; index < maximalIndex; index++) {
+				for (let index = 0; index < maximalIndex; ++index) {
 					tasks[index].status === "await"
 						? TasksAPI.execute(tasks[index])
 						: null;

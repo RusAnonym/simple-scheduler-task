@@ -50,7 +50,7 @@ export interface inputTask {
 	/**
 	 * Function to be executed
 	 */
-	source: () => void;
+	source: () => Promise<unknown> | unknown;
 }
 
 /**
