@@ -15,7 +15,7 @@ import * as userTypes from "./types";
  * @classdesc This is a task constructor
  * @example
  * const { Task } = require(`simple-scheduler-task`);
- *
+ * // Outputs in 5 minutes to the console: "Hello, world!
  * new Task({
  * 	plannedTime: Number(new Date()) + 5 * 60 * 1000,
  * 	source: function () {
@@ -113,6 +113,29 @@ class Task {
 	}
 }
 
+/**
+ * @class
+ * @classdesc This is a task constructor
+ * @returns {Task} An instance of the Task class
+ * @example
+ * const { Timeout } = require(`simple-scheduler-task`);
+ * // Outputs in 5 minutes to the console: "Hello, world!
+ * new Timeout({
+ * 	plannedTime: Date.now() + 5 * 60 * 1000,
+ * 	source: function () {
+ * 		console.log(`Hello, world!`);
+ * 	}
+ * });
+ *
+ * // Shorter entry
+ * new Timeout(() => console.log(`Hello, world!`), 5 * 60 * 1000);
+ *
+ * // Also with the third argument, you can specify additional parameters
+ * // For example, now after completing a task, there will be an event about it
+ * new Interval(() => console.log(`Hello, world!`), 5 * 60 * 1000, {
+ * 	inform: true
+ * });
+ */
 class Timeout extends Task {
 	constructor(
 		params: userTypes.inputTask | (() => Promise<unknown> | unknown),
@@ -141,6 +164,30 @@ class Timeout extends Task {
 		}
 	}
 }
+
+/**
+ * @class
+ * @classdesc This is a interval constructor
+ * @returns {Task} An instance of the Task class
+ * @example
+ * const { Interval } = require(`simple-scheduler-task`);
+ * // It will output every 5 minutes: "Hello, world!"
+ * new Interval({
+ *  intervalTimer: 5 * 60 * 1000,
+ * 	source: function () {
+ * 		console.log(`Hello, world!`);
+ * 	}
+ * });
+ *
+ * // Shorter entry
+ * new Interval(() => console.log(`Hello, world!`), 5 * 60 * 1000);
+ *
+ * // Also with the third argument, you can specify additional parameters
+ * // For example, now the interval will be executed 10 times and deleted
+ * new Interval(() => console.log(`Hello, world!`), 5 * 60 * 1000, {
+ * 	intervalTriggers: 10
+ * });
+ */
 class Interval extends Task {
 	constructor(
 		params: userTypes.inputTask | (() => Promise<unknown> | unknown),
