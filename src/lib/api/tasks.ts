@@ -50,7 +50,7 @@ class Task {
 				params: {},
 				inform: false,
 				isInterval: false,
-				intervalTimer: Number(plannedTime) - Number(new Date()),
+				intervalTimer: 0,
 				intervalTriggers: 0,
 				service: false,
 				source: params,
@@ -62,7 +62,7 @@ class Task {
 				inform = false,
 				isInterval = false,
 				intervalTimer = Number(plannedTime) - Number(new Date()),
-				intervalTriggers = 0,
+				intervalTriggers = Infinity,
 				source,
 			} = params;
 
@@ -141,6 +141,25 @@ class Task {
 	}
 }
 
+class Interval extends Task {
+	constructor(
+		params: userTypes.inputTask | (() => Promise<unknown> | unknown),
+		plannedTime?: Date | number,
+	) {
+		if (typeof params === "function") {
+			super({
+				plannedTime: Date.now() + Number(plannedTime),
+				isInterval: true,
+				intervalTimer: Number(plannedTime),
+				source: params,
+			});
+		} else {
+			params.isInterval = true;
+			super(params);
+		}
+	}
+}
+
 /**
  * This is a function that adds a new task, analogous to new Task
  * @param {Object} params {@link inputTask}
@@ -194,4 +213,4 @@ const getFilterTasks = (params: {
 	return findTasks.map(parseTask);
 };
 
-export { Task, add, getTaskByID, getAllTasks, getFilterTasks };
+export { Task, Interval, add, getTaskByID, getAllTasks, getFilterTasks };
