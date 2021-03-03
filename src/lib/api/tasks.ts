@@ -15,7 +15,7 @@ import * as userTypes from "./types";
  * @classdesc This is a task constructor
  * @example
  * const { Task } = require(`simple-scheduler-task`);
- *
+ * // Outputs in 5 minutes to the console: "Hello, world!
  * new Task({
  * 	plannedTime: Number(new Date()) + 5 * 60 * 1000,
  * 	source: function () {
@@ -30,64 +30,36 @@ class Task {
 	 * This is task constructor
 	 * @param {Object} params {@link inputTask}
 	 */
-	constructor(
-		params: userTypes.inputTask | (() => Promise<unknown> | unknown),
-		plannedTime?: Date | number,
-	) {
-		if (typeof params === "function") {
-			if (
-				(!params && !plannedTime) ||
-				new Date(plannedTime || "").toString() === "Invalid Date"
-			) {
-				throw new Error(
-					"One of the required parameters is missing or incorrect",
-				);
-			}
+	constructor(params: userTypes.inputTask) {
+		const {
+			plannedTime = new Date(),
+			type = "missing",
+			inform = false,
+			isInterval = false,
+			intervalTimer = Number(plannedTime) - Number(new Date()),
+			intervalTriggers = Infinity,
+			source,
+		} = params;
 
-			this.TaskID = create({
-				plannedTime: Number(plannedTime),
-				type: "missing",
-				params: {},
-				inform: false,
-				isInterval: false,
-				intervalTimer: Number(plannedTime) - Number(new Date()),
-				intervalTriggers: 0,
-				service: false,
-				source: params,
-			});
-		} else {
-			const {
-				plannedTime = new Date(),
-				type = "missing",
-				inform = false,
-				isInterval = false,
-				intervalTimer = Number(plannedTime) - Number(new Date()),
-				intervalTriggers = 0,
-				source,
-			} = params;
-
-			if (
-				(!isInterval && !plannedTime) ||
-				!source ||
-				new Date(plannedTime).toString() === "Invalid Date"
-			) {
-				throw new Error(
-					"One of the required parameters is missing or incorrect",
-				);
-			}
-
-			this.TaskID = create({
-				plannedTime: Number(plannedTime),
-				type: type,
-				params: params.params || {},
-				inform: inform,
-				isInterval: isInterval,
-				intervalTimer: intervalTimer,
-				intervalTriggers: intervalTriggers,
-				service: false,
-				source: source,
-			});
+		if (
+			(!isInterval && !plannedTime) ||
+			!source ||
+			new Date(plannedTime).toString() === "Invalid Date"
+		) {
+			throw new Error("One of the required parameters is missing or incorrect");
 		}
+
+		this.TaskID = create({
+			plannedTime: Number(plannedTime),
+			type: type,
+			params: params.params || {},
+			inform: inform,
+			isInterval: isInterval,
+			intervalTimer: intervalTimer,
+			intervalTriggers: intervalTriggers,
+			service: false,
+			source: source,
+		});
 	}
 
 	private get task(): ITask {
@@ -142,14 +114,110 @@ class Task {
 }
 
 /**
+ * @class
+ * @classdesc This is a task constructor
+ * @returns {Task} An instance of the Task class
+ * @example
+ * const { Timeout } = require(`simple-scheduler-task`);
+ * // Outputs in 5 minutes to the console: "Hello, world!
+ * new Timeout({
+ * 	plannedTime: Date.now() + 5 * 60 * 1000,
+ * 	source: function () {
+ * 		console.log(`Hello, world!`);
+ * 	}
+ * });
+ *
+ * // Shorter entry
+ * new Timeout(() => console.log(`Hello, world!`), 5 * 60 * 1000);
+ *
+ * // Also with the third argument, you can specify additional parameters
+ * // For example, now after completing a task, there will be an event about it
+ * new Interval(() => console.log(`Hello, world!`), 5 * 60 * 1000, {
+ * 	inform: true
+ * });
+ */
+class Timeout extends Task {
+	constructor(
+		params: userTypes.inputTask | (() => Promise<unknown> | unknown),
+		ms?: Date | number,
+		additionalParams?: userTypes.inputTask,
+	) {
+		if (typeof params === "function") {
+			if (
+				(!params && !ms) ||
+				new Date(ms || "").toString() === "Invalid Date"
+			) {
+				throw new Error(
+					"One of the required parameters is missing or incorrect",
+				);
+			}
+			const TaskParams = Object.assign(
+				{
+					plannedTime: Date.now() + Number(ms),
+					source: params,
+				},
+				additionalParams,
+			);
+			super(TaskParams);
+		} else {
+			super(params);
+		}
+	}
+}
+
+/**
+ * @class
+ * @classdesc This is a interval constructor
+ * @returns {Task} An instance of the Task class
+ * @example
+ * const { Interval } = require(`simple-scheduler-task`);
+ * // It will output every 5 minutes: "Hello, world!"
+ * new Interval({
+ *  intervalTimer: 5 * 60 * 1000,
+ * 	source: function () {
+ * 		console.log(`Hello, world!`);
+ * 	}
+ * });
+ *
+ * // Shorter entry
+ * new Interval(() => console.log(`Hello, world!`), 5 * 60 * 1000);
+ *
+ * // Also with the third argument, you can specify additional parameters
+ * // For example, now the interval will be executed 10 times and deleted
+ * new Interval(() => console.log(`Hello, world!`), 5 * 60 * 1000, {
+ * 	intervalTriggers: 10
+ * });
+ */
+class Interval extends Task {
+	constructor(
+		params: userTypes.inputTask | (() => Promise<unknown> | unknown),
+		ms?: Date | number,
+		additionalParams?: userTypes.inputTask,
+	) {
+		if (typeof params === "function") {
+			const TaskParams = Object.assign(
+				{
+					plannedTime: Date.now() + Number(ms),
+					isInterval: true,
+					intervalTimer: Number(ms),
+					source: params,
+				},
+				additionalParams,
+			);
+			super(TaskParams);
+		} else {
+			params.isInterval = true;
+			super(params);
+		}
+	}
+}
+
+/**
  * This is a function that adds a new task, analogous to new Task
  * @param {Object} params {@link inputTask}
  */
-const add = (
-	params: userTypes.inputTask | (() => Promise<never> | never),
-	plannedTime?: Date | number,
-): string => {
-	return new Task(params, plannedTime ? plannedTime : undefined).ID;
+const add = (params: userTypes.inputTask): string => {
+	return new Task(params).ID;
 };
 
 /**
@@ -194,4 +262,12 @@ const getFilterTasks = (params: {
 	return findTasks.map(parseTask);
 };
 
-export { Task, add, getTaskByID, getAllTasks, getFilterTasks };
+export {
+	Task,
+	Interval,
+	Timeout,
+	add,
+	getTaskByID,
+	getAllTasks,
+	getFilterTasks,
+};

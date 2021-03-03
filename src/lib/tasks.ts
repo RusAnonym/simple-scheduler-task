@@ -37,7 +37,7 @@ const create = (task: {
 			intervalTime: task.intervalTimer,
 			source: task.source,
 			inform: task.inform,
-			infinityInterval: task.intervalTriggers === 0,
+			infinityInterval: task.intervalTriggers === Infinity,
 			triggeringQuantity: 0,
 			remainingTriggers: task.intervalTriggers,
 		},
@@ -125,14 +125,18 @@ const execute = async (taskData: ITask): Promise<boolean> => {
 						return true;
 					}
 				}
+				if (task.service.inform !== true) {
+					task.status = "await";
+				}
 				task.plannedTime = Number(currentDate) + task.service.intervalTime;
+				++task.service.triggeringQuantity;
 				if (config.mode === "timeout") {
 					taskData.service.timeoutID = setTimeout(() => {
 						execute(taskData);
 					}, task.plannedTime - Number(currentDate));
 				} else {
 					const taskIndex = tasks.findIndex((x) => x.id === taskData.id);
-					let newTaskIndex = tasks.findIndex(	
+					let newTaskIndex = tasks.findIndex(
 						(x) => x.plannedTime >= task.plannedTime && x.id !== task.id,
 					);
 					newTaskIndex + 1 !== tasks.length && newTaskIndex > 0
