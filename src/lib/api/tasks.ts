@@ -31,12 +31,12 @@ class Task {
 	 * @param {Object} params {@link inputTask}
 	 */
 	constructor(params: userTypes.inputTask) {
+		let { plannedTime = 0 } = params;
 		const {
-			plannedTime = new Date(),
 			type = "missing",
 			inform = false,
 			isInterval = false,
-			intervalTimer = Number(plannedTime) - Number(new Date()),
+			intervalTimer = 0,
 			intervalTriggers = Infinity,
 			source,
 		} = params;
@@ -47,6 +47,10 @@ class Task {
 			new Date(plannedTime).toString() === "Invalid Date"
 		) {
 			throw new Error("One of the required parameters is missing or incorrect");
+		}
+
+		if (isInterval && plannedTime === 0) {
+			plannedTime = Number(new Date()) + intervalTimer;
 		}
 
 		this.TaskID = create({
