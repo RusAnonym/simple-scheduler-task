@@ -1,17 +1,20 @@
 import * as core from "./lib/core";
 
-const settings = core.settings;
-const tasks = core.TasksAPI;
-const events = core.Events;
-const TaskConstructor = core.TasksAPI.Task;
-const TimeoutConstructor = core.TasksAPI.Timeout;
-const IntervalConstructor = core.TasksAPI.Interval;
+import { Interval, Task, Timeout } from "./lib/api/tasks";
 
-export {
-	settings,
-	tasks,
-	events,
-	TaskConstructor as Task,
-	TimeoutConstructor as Timeout,
-	IntervalConstructor as Interval,
-};
+/**
+ * Scheduler settings
+ */
+const settings = core.settings;
+
+/**
+ * Tasks API
+ */
+const tasks = core.TasksAPI;
+
+/**
+ * Events
+ */
+const events = core.Events;
+
+export { settings, tasks, events, Task, Timeout, Interval };
