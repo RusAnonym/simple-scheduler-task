@@ -1,5 +1,5 @@
 import { tasks } from "../../core";
-import { create, parseTask, execute } from "../../tasks";
+import { create, parseTask, execute, remove } from "../../tasks";
 import { inputTask } from "../types";
 import { ITask, IParseTask } from "../../../types/tasks";
 
@@ -107,6 +107,13 @@ class Task {
 	 */
 	public async execute(): Promise<void> {
 		await execute(this.task);
+	}
+
+	/**
+	 * Allows you to delete the task
+	 */
+	public delete(): void {
+		remove(this.task);
 	}
 
 	/**
