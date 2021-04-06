@@ -41,10 +41,7 @@ class Interval extends Task {
 	 * @example
 	 * // Shorter entry
 	 * new Interval(() => console.log(`Hello, world!`), 5 * 60 * 1000);
-	 */
-	constructor(func: () => Promise<unknown> | unknown, ms: Date | number);
-	/**
-	 * @example
+	 *
 	 * // Also with the third argument, you can specify additional parameters
 	 * // For example, now after completing a task, there will be an event about it
 	 * new Interval(() => console.log(`Hello, world!`), 5 * 60 * 1000, {
@@ -54,27 +51,27 @@ class Interval extends Task {
 	constructor(
 		func: () => Promise<unknown> | unknown,
 		ms: Date | number,
-		params: inputTask,
+		params?: inputTask,
 	);
 	constructor(
-		params: inputTask | (() => Promise<unknown> | unknown),
+		paramsOrFunction: inputTask | (() => Promise<unknown> | unknown),
 		ms?: Date | number,
 		additionalParams?: inputTask,
 	) {
-		if (typeof params === "function") {
+		if (typeof paramsOrFunction === "function") {
 			const TaskParams = Object.assign(
 				{
 					plannedTime: Date.now() + Number(ms),
 					isInterval: true,
 					intervalTimer: Number(ms),
-					source: params,
+					source: paramsOrFunction,
 				},
-				additionalParams,
+				additionalParams || {},
 			);
 			super(TaskParams);
 		} else {
-			params.isInterval = true;
-			super(params);
+			paramsOrFunction.isInterval = true;
+			super(paramsOrFunction);
 		}
 	}
 }

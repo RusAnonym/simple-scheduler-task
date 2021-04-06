@@ -44,10 +44,7 @@ class Timeout extends Task {
 	 * @example
 	 * // Shorter entry
 	 * new Timeout(() => console.log(`Hello, world!`), 5 * 60 * 1000);
-	 */
-	constructor(func: () => Promise<unknown> | unknown, ms: Date | number);
-	/**
-	 * @example
+	 *
 	 * // Also with the third argument, you can specify additional parameters
 	 * // For example, now after completing a task, there will be an event about it
 	 * new Timeout(() => console.log(`Hello, world!`), 5 * 60 * 1000, {
@@ -57,16 +54,16 @@ class Timeout extends Task {
 	constructor(
 		func: () => Promise<unknown> | unknown,
 		ms: Date | number,
-		params: inputTask,
+		params?: inputTask,
 	);
 	constructor(
-		params: inputTask | (() => Promise<unknown> | unknown),
+		paramsOrFunction: inputTask | (() => Promise<unknown> | unknown),
 		ms?: Date | number,
 		additionalParams?: inputTask,
 	) {
-		if (typeof params === "function") {
+		if (typeof paramsOrFunction === "function") {
 			if (
-				(!params && !ms) ||
+				(!paramsOrFunction && !ms) ||
 				new Date(ms || "").toString() === "Invalid Date"
 			) {
 				throw new Error(
@@ -76,13 +73,13 @@ class Timeout extends Task {
 			const TaskParams = Object.assign(
 				{
 					plannedTime: Date.now() + Number(ms),
-					source: params,
+					source: paramsOrFunction,
 				},
-				additionalParams,
+				additionalParams || {},
 			);
 			super(TaskParams);
 		} else {
-			super(params);
+			super(paramsOrFunction);
 		}
 	}
 }

@@ -108,6 +108,13 @@ class Task {
 	public async execute(): Promise<void> {
 		await execute(this.task);
 	}
+
+	/**
+	 * Allows you to change the time of the next execution after creating a task
+	 */
+	public setPlannedTime(newPlannedTime: number): void {
+		this.task.plannedTime = newPlannedTime;
+	}
 }
 
 export default Task;
