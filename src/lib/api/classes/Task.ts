@@ -89,6 +89,13 @@ class Task {
 	}
 
 	/**
+	 * Allows you to know when the task was created
+	 */
+	public get created(): Date {
+		return new Date(this.task.service.create);
+	}
+
+	/**
 	 * Allows you to pause a task
 	 */
 	public pause(): void {
