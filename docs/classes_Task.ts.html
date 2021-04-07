@@ -94,7 +94,7 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>import { tasks } from "../../core";
-import { create, parseTask, execute } from "../../tasks";
+import { create, parseTask, execute, remove } from "../../tasks";
 import { inputTask } from "../types";
 import { ITask, IParseTask } from "../../../types/tasks";
 
@@ -184,6 +184,13 @@ class Task {
 	}
 
 	/**
+	 * Allows you to know when the task was created
+	 */
+	public get created(): Date {
+		return new Date(this.task.service.create);
+	}
+
+	/**
 	 * Allows you to pause a task
 	 */
 	public pause(): void {
@@ -202,6 +209,27 @@ class Task {
 	 */
 	public async execute(): Promise&lt;void> {
 		await execute(this.task);
+	}
+
+	/**
+	 * Allows you to delete the task
+	 */
+	public delete(): void {
+		remove(this.task);
+	}
+
+	/**
+	 * Allows you to change the time of the next execution after creating a task
+	 */
+	public set plannedTime(newPlannedTime: number) {
+		this.task.plannedTime = newPlannedTime;
+	}
+
+	/**
+	 * Allows you to enable/disable the notification of task completion
+	 */
+	public set inform(inform: boolean) {
+		this.task.service.inform = inform;
 	}
 }
 
