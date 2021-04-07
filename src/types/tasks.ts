@@ -32,6 +32,7 @@ export interface IParseTask {
 		triggeringQuantity: number;
 		remainingTriggers: number;
 	};
+	created: Date;
 	nextExecute: Date;
 	source: () => Promise<unknown> | unknown;
 }

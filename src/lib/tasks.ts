@@ -60,6 +60,7 @@ const parseTask = (taskData: ITask): IParseTask => {
 		inform: taskData.service.inform,
 		isInterval: taskData.isInterval,
 		nextExecute: new Date(taskData.plannedTime),
+		created: new Date(taskData.service.create),
 		source: taskData.service.source,
 	};
 	if (taskData.isInterval) {
