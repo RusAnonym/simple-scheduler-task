@@ -119,8 +119,15 @@ class Task {
 	/**
 	 * Allows you to change the time of the next execution after creating a task
 	 */
-	public setPlannedTime(newPlannedTime: number): void {
+	public set plannedTime(newPlannedTime: number) {
 		this.task.plannedTime = newPlannedTime;
+	}
+
+	/**
+	 * Allows you to enable/disable the notification of task completion
+	 */
+	public set inform(inform: boolean) {
+		this.task.service.inform = inform;
 	}
 }
 
