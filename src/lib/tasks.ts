@@ -86,6 +86,7 @@ const execute = async (taskData: ITask): Promise<boolean> => {
 		return false;
 	} else {
 		task.status = "works";
+		task.plannedTime = Number(currentDate) + task.service.intervalTime;
 		const startExecute = performance.now();
 		try {
 			const response = await task.service.source();
@@ -129,7 +130,6 @@ const execute = async (taskData: ITask): Promise<boolean> => {
 				if (task.service.inform !== true) {
 					task.status = "await";
 				}
-				task.plannedTime = Number(currentDate) + task.service.intervalTime;
 				++task.service.triggeringQuantity;
 				if (config.mode === "timeout") {
 					taskData.service.timeoutID = setTimeout(() => {
