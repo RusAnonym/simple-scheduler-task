@@ -1,5 +1,9 @@
 src
 docs
-test.js
+test.*
 yarn.lock
 yarn-error.log
+.eslintrc
+.gitignore
+jsdoc.json
+tsconfig*.json
