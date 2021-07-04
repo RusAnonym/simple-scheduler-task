@@ -1,20 +1,26 @@
-import * as core from "./lib/core";
+import settings from "./lib/api/settings";
+import tasks from "./lib/api/tasks";
+import events from "./lib/api/logger";
 
-import { Interval, Task, Timeout } from "./lib/api/tasks";
+class Scheduler {
+	/**
+	 * Scheduler settings
+	 */
+	public settings = settings;
 
-/**
- * Scheduler settings
- */
-const settings = core.settings;
+	/**
+	 * Tasks API
+	 */
+	public tasks = tasks;
 
-/**
- * Tasks API
- */
-const tasks = core.TasksAPI;
+	/**
+	 * Events API
+	 */
+	public events = events.Events;
+}
 
-/**
- * Events
- */
-const events = core.Events;
+export default new Scheduler();
 
-export { settings, tasks, events, Task, Timeout, Interval };
+export const Task = tasks.Task;
+export const Timeout = tasks.Timeout;
+export const Interval = tasks.Interval;

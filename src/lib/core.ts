@@ -1,22 +1,23 @@
-import { ITask } from "./../types/tasks";
-import * as TasksAPI from "./api/tasks";
-import settings from "./api/settings";
-import { logger, Events } from "./api/logger";
+import Tasks from "./tasks";
+import Utils from "./utils";
+import Settings from "./settings";
+import Logger from "./logger";
 
-const config: {
-	mode: "timeout" | "interval" | "not_work";
-	interval: NodeJS.Timer | null;
-	intervalMS: number;
-} = {
-	mode: "not_work",
-	interval: null,
-	intervalMS: 1000,
-};
+class SchedulerCore {
+	public tasks = new Tasks();
+	public utils = new Utils();
+	public settings = new Settings();
+	public logger = new Logger();
 
-const tasks: ITask[] = [];
+	public config: {
+		mode: "timeout" | "interval" | "not_work";
+		interval: NodeJS.Timer | null;
+		intervalMS: number;
+	} = {
+		mode: "not_work",
+		interval: null,
+		intervalMS: 1000,
+	};
+}
 
-(function startScheduler() {
-	settings.useInterval();
-})();
-
-export { config, tasks, TasksAPI, settings, logger, Events };
+export default new SchedulerCore();

@@ -1,5 +1,4 @@
-import { tasks } from "../../core";
-import { create, parseTask, execute, remove } from "../../tasks";
+import core from "../../core";
 import { inputTask } from "../types";
 import { ITask, IParseTask } from "../../../types/tasks";
 
@@ -46,7 +45,7 @@ class Task {
 			plannedTime = Number(new Date()) + intervalTimer;
 		}
 
-		this.TaskID = create({
+		this.TaskID = core.tasks.create({
 			plannedTime: Number(plannedTime),
 			type: type,
 			params: params.params || {},
@@ -60,7 +59,7 @@ class Task {
 	}
 
 	private get task(): ITask {
-		const task = tasks.find((x) => x.id === this.TaskID);
+		const task = core.tasks.list.find((x) => x.id === this.TaskID);
 		if (task) {
 			return task;
 		}
@@ -71,7 +70,7 @@ class Task {
 	 * Allows you to find out task data
 	 */
 	public get data(): IParseTask {
-		return parseTask(this.task);
+		return core.tasks.parse(this.task);
 	}
 
 	/**
@@ -113,14 +112,14 @@ class Task {
 	 * Allows you to force the task
 	 */
 	public async execute(): Promise<void> {
-		await execute(this.task);
+		await core.tasks.execute(this.task);
 	}
 
 	/**
 	 * Allows you to delete the task
 	 */
 	public delete(): void {
-		remove(this.task);
+		core.tasks.remove(this.task);
 	}
 
 	/**

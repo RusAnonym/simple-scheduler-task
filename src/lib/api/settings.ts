@@ -1,4 +1,4 @@
-import * as settings from "../settings";
+import core from "../core";
 
 /**
  * @module Settings
@@ -13,8 +13,8 @@ import * as settings from "../settings";
  * scheduler.settings.useInterval(); // => true
  */
 const useInterval = (): boolean => {
-	return settings.startInterval();
-}
+	return core.settings.useInterval();
+};
 
 /**
  * Enables task scheduling with a separate timeout for each task
@@ -22,7 +22,7 @@ const useInterval = (): boolean => {
  * scheduler.settings.useTimeouts(); // => true
  */
 const useTimeouts = (): boolean => {
-	return settings.startTimeout();
-}
+	return core.settings.useTimeouts();
+};
 
 export default { useInterval, useTimeouts };

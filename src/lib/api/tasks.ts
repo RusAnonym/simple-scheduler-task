@@ -1,6 +1,5 @@
 import { ITask, IParseTask } from "./../../types/tasks";
-import { tasks } from "../core";
-import { parseTask } from "../tasks";
+import core from "../core";
 import * as userTypes from "./types";
 
 import Task from "./classes/Task";
@@ -28,7 +27,9 @@ function add(params: userTypes.inputTask): string {
  * scheduler.task.getAllTasks(); // => Array with all tasks
  */
 function getAllTasks(): IParseTask[] {
-	return tasks.filter((task) => task.hidden !== true).map(parseTask);
+	return core.tasks.list
+		.filter((task) => task.hidden !== true)
+		.map(core.tasks.parse);
 }
 
 /**
@@ -36,11 +37,11 @@ function getAllTasks(): IParseTask[] {
  * @param {taskId} - ID of task
  */
 function getTaskByID(taskId: string): IParseTask {
-	const task = tasks.find((x) => x.id === taskId);
+	const task = core.tasks.list.find((x) => x.id === taskId);
 	if (!task) {
 		throw new Error(`No task with this ID was found`);
 	} else {
-		return parseTask(task);
+		return core.tasks.parse(task);
 	}
 }
 
@@ -55,16 +56,16 @@ function getFilterTasks(params: {
 }): IParseTask[] {
 	let findTasks: ITask[] = [];
 	if (params.type) {
-		findTasks = tasks.filter((x) => x.type === params.type);
+		findTasks = core.tasks.list.filter((x) => x.type === params.type);
 	}
-	findTasks.length === 0 ? (findTasks = tasks) : null;
+	findTasks.length === 0 ? (findTasks = core.tasks.list) : null;
 	if (params.params) {
 		findTasks.filter((x) => x.params === params.params);
 	}
-	return findTasks.map(parseTask);
+	return findTasks.map(core.tasks.parse);
 }
 
-export {
+export default {
 	Task,
 	Interval,
 	Timeout,

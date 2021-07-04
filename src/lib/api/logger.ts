@@ -54,4 +54,4 @@ const logger = {
 	},
 };
 
-export { logger, Events };
+export default { logger, Events };
