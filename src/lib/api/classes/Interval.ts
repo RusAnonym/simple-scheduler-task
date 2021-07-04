@@ -1,5 +1,5 @@
 import Task from "./Task";
-import { inputTask } from "../types";
+import { IInputTask } from "../types";
 
 /**
  * @class
@@ -36,7 +36,7 @@ class Interval extends Task {
 	 * 	}
 	 * });
 	 */
-	constructor(params: inputTask);
+	constructor(params: IInputTask);
 	/**
 	 * @example
 	 * // Shorter entry
@@ -51,12 +51,12 @@ class Interval extends Task {
 	constructor(
 		func: () => Promise<unknown> | unknown,
 		ms: Date | number,
-		params?: inputTask,
+		params?: IInputTask,
 	);
 	constructor(
-		paramsOrFunction: inputTask | (() => Promise<unknown> | unknown),
+		paramsOrFunction: IInputTask | (() => Promise<unknown> | unknown),
 		ms?: Date | number,
-		additionalParams?: inputTask,
+		additionalParams?: IInputTask,
 	) {
 		if (typeof paramsOrFunction === "function") {
 			const TaskParams = Object.assign(

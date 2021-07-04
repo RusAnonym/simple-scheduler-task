@@ -1,5 +1,5 @@
 import core from "../../core";
-import { inputTask } from "../types";
+import { IInputTask } from "../types";
 import { ITask, IParseTask } from "../../../types/tasks";
 
 /**
@@ -22,7 +22,7 @@ class Task {
 	 * This is task constructor
 	 * @param {Object} params {@link inputTask}
 	 */
-	constructor(params: inputTask) {
+	constructor(params: IInputTask) {
 		let { plannedTime = 0 } = params;
 		const {
 			type = "missing",

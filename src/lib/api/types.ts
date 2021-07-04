@@ -1,9 +1,9 @@
 /**
- * Set of parameters to create a task {@link inputTask}
- * @see inputTask
+ * Set of parameters to create a task {@link IInputTask}
+ * @see IInputTask
  */
 
-export interface inputTask {
+export interface IInputTask {
 	/**
 	 * The time when the task should be completed
 	 * @default new Date()
@@ -54,10 +54,10 @@ export interface inputTask {
 }
 
 /**
- * Task Structure ({@link parseTask})
- * @see parseTask
+ * Task Structure ({@link IParseTask})
+ * @see IParseTask
  */
-export interface parseTask {
+export interface IParseTask {
 	/**
 	 * Unique task identifier
 	 */
@@ -110,14 +110,14 @@ export interface parseTask {
 }
 
 /**
- * Structure of the error log ({@link ErrorLog})
- * @see ErrorLog
+ * Structure of the error log ({@link IErrorLog})
+ * @see IErrorLog
  */
-export interface ErrorLog {
+export interface IErrorLog {
 	/**
 	 * Task structure ({@link ParseTask})
 	 */
-	task: parseTask;
+	task: IParseTask;
 	/**
 	 * Error structure
 	 */
@@ -129,14 +129,14 @@ export interface ErrorLog {
 }
 
 /**
- * Structure of the task log ({@link SuccessLog})
- * @see SuccessLog
+ * Structure of the task log ({@link ISuccessLog})
+ * @see ISuccessLog
  */
-export interface SuccessLog {
+export interface ISuccessLog {
 	/**
 	 * Task structure ({@link ParseTask})
 	 */
-	task: parseTask;
+	task: IParseTask;
 	/**
 	 * The value returned by the executed function
 	 */

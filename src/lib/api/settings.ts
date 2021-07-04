@@ -7,22 +7,24 @@ import core from "../core";
  * const scheduler = require(`simple-scheduler-task`);
  */
 
-/**
- * Includes task scheduling with one interval
- * @example
- * scheduler.settings.useInterval(); // => true
- */
-const useInterval = (): boolean => {
-	return core.settings.useInterval();
-};
+class Settings {
+	/**
+	 * Includes task scheduling with one interval
+	 * @example
+	 * scheduler.settings.useInterval(); // => true
+	 */
+	public useInterval(): boolean {
+		return core.settings.useInterval();
+	}
 
-/**
- * Enables task scheduling with a separate timeout for each task
- * @example
- * scheduler.settings.useTimeouts(); // => true
- */
-const useTimeouts = (): boolean => {
-	return core.settings.useTimeouts();
-};
+	/**
+	 * Enables task scheduling with a separate timeout for each task
+	 * @example
+	 * scheduler.settings.useTimeouts(); // => true
+	 */
+	public useTimeouts(): boolean {
+		return core.settings.useTimeouts();
+	}
+}
 
-export default { useInterval, useTimeouts };
+export default new Settings();

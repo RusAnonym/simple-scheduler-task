@@ -17,7 +17,7 @@ import Timeout from "./classes/Timeout";
  * This is a function that adds a new task, analogous to new Task
  * @param {Object} params {@link inputTask}
  */
-function add(params: userTypes.inputTask): string {
+function add(params: userTypes.IInputTask): string {
 	return new Task(params).ID;
 }
 

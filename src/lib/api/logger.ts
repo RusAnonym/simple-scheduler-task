@@ -49,7 +49,8 @@ const logger = {
 	 * scheduler.events.on("executions", function (data) {
 	 *    console.log(data); // => SuccessLog structure
 	 * });
-	 */ success(task: ISchedulerInformLog): boolean {
+	 */
+	success(task: ISchedulerInformLog): boolean {
 		return Events.emitSuccess(task);
 	},
 };
