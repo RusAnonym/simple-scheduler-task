@@ -29,13 +29,13 @@ export declare interface Logger {
 }
 
 export class Logger extends EventEmitter {
-	emitText(data: string): void {
-		this.emit("logs", data);
+	public emitText(data: string): boolean {
+		return this.emit("logs", data);
 	}
-	emitError(data: SchedulerErrorLog): void {
-		this.emit("errors", data);
+	public emitError(data: SchedulerErrorLog): boolean {
+		return this.emit("errors", data);
 	}
-	emitSuccess(data: SchedulerInformLog): void {
-		this.emit("executions", data);
+	public emitSuccess(data: SchedulerInformLog): boolean {
+		return this.emit("executions", data);
 	}
 }
