@@ -1,6 +1,10 @@
+import core from "./lib/core";
+
 import settings from "./lib/api/settings";
 import tasks from "./lib/api/tasks";
 import events from "./lib/api/logger";
+
+core.settings.useInterval();
 
 class Scheduler {
 	/**

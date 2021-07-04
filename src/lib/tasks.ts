@@ -1,4 +1,6 @@
 /* eslint-disable no-unsafe-finally */
+import { performance } from "perf_hooks";
+
 import { IParseTask, ITask } from "./../types/tasks";
 
 import core from "./core";
