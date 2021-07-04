@@ -27,4 +27,4 @@ class Settings {
 	}
 }
 
-export default new Settings();
+export default Settings;

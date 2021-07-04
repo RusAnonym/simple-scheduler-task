@@ -1,6 +1,6 @@
 import core from "./lib/core";
 
-import settings from "./lib/api/settings";
+import Settings from "./lib/api/settings";
 import tasks from "./lib/api/tasks";
 import events from "./lib/api/logger";
 
@@ -10,7 +10,7 @@ class Scheduler {
 	/**
 	 * Scheduler settings
 	 */
-	public settings = settings;
+	public settings = new Settings();
 
 	/**
 	 * Tasks API
