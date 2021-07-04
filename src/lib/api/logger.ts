@@ -1,6 +1,6 @@
 import {
-	SchedulerErrorLog,
-	SchedulerInformLog,
+	ISchedulerErrorLog,
+	ISchedulerInformLog,
 	Logger,
 } from "../../types/scheduler";
 
@@ -24,7 +24,7 @@ const logger = {
 	 *    console.log(log); // => string
 	 * });
 	 */
-	text(text: string): void {
+	text(text: string): boolean {
 		return Events.emitText(text);
 	},
 	/**
@@ -37,7 +37,7 @@ const logger = {
 	 *    console.log(error); // => Error structure
 	 * });
 	 */
-	error(error: SchedulerErrorLog): void {
+	error(error: ISchedulerErrorLog): boolean {
 		return Events.emitError(error);
 	},
 	/**
@@ -49,7 +49,7 @@ const logger = {
 	 * scheduler.events.on("executions", function (data) {
 	 *    console.log(data); // => SuccessLog structure
 	 * });
-	 */ success(task: SchedulerInformLog): void {
+	 */ success(task: ISchedulerInformLog): boolean {
 		return Events.emitSuccess(task);
 	},
 };
