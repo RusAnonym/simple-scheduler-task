@@ -14,22 +14,22 @@ export interface ISchedulerInputTask {
 export interface ISchedulerTaskInfo {
 	plannedTime: number;
 	id: string;
-	hidden: boolean;
+	type: string;
+	params: Record<string, unknown>;
 	status: TSchedulerTaskStatus;
+	created: Date;
+	isInform: boolean;
+	isHidden: boolean;
 	timeout: NodeJS.Timer | null;
 	interval: {
 		is: boolean;
 		time: number;
+		isNextExecutionAfterDone: boolean;
 		isInfinity: boolean;
 		triggeringQuantity: number;
 		remainingTriggers: number;
 	};
-	service: {
-		type: string;
-		params: Record<string, unknown>;
-		created: Date;
-		inform: boolean;
-	};
+
 	source(): Promise<unknown> | unknown;
 }
 
@@ -38,12 +38,13 @@ export interface IParseTask {
 	type: string;
 	params: Record<string, unknown>;
 	status: TSchedulerTaskStatus;
-	inform: boolean;
+	isInform: boolean;
 	isInterval: boolean;
 	intervalData?: {
 		infinityInterval: boolean;
 		triggeringQuantity: number;
 		remainingTriggers: number;
+		isNextExecutionAfterDone: boolean;
 	};
 	created: Date;
 	nextExecute: Date;

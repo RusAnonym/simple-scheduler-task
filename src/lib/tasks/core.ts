@@ -1,21 +1,32 @@
-import { ISchedulerTaskInfo } from "./../../types/tasks";
+import scheduler from "../core";
+
+import { ISchedulerTaskInfo, IParseTask } from "./../../types/tasks";
 
 class SchedulerTask {
 	public info: ISchedulerTaskInfo;
 
 	constructor(task: ISchedulerTaskInfo) {
 		this.info = task;
+		scheduler.tasks.list.push(this);
 	}
 
-	// public async execute(): Promise<void> {
-	// 	const currentDate = new Date();
-	// 	this.info.status = "executed";
-	// 	if (!this.info.interval.isNextExecutionAfterDone) {
-	// 		this.info.plannedTime = Number(currentDate) + this.info.interval.time;
-	// 	}
+	public async execute(): Promise<void> {
+		return;
+	}
 
-	// 	return;
-	// }
+	public get parseTask(): IParseTask {
+		return {
+			id: this.info.id,
+			type: this.info.type,
+			params: this.info.params,
+			status: this.info.status,
+			nextExecute: new Date(this.info.plannedTime),
+			created: this.info.created,
+			isInform: this.info.isInform,
+			isInterval: this.info.interval.is,
+			source: this.info.source,
+		};
+	}
 }
 
 class SchedulerTasks {
