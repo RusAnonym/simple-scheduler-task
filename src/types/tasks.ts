@@ -20,7 +20,6 @@ export interface ISchedulerTaskInfo {
 	interval: {
 		is: boolean;
 		time: number;
-		isNextExecutionAfterDone: boolean;
 		isInfinity: boolean;
 		triggeringQuantity: number;
 		remainingTriggers: number;
@@ -31,5 +30,22 @@ export interface ISchedulerTaskInfo {
 		created: Date;
 		inform: boolean;
 	};
+	source(): Promise<unknown> | unknown;
+}
+
+export interface IParseTask {
+	id: string;
+	type: string;
+	params: Record<string, unknown>;
+	status: TSchedulerTaskStatus;
+	inform: boolean;
+	isInterval: boolean;
+	intervalData?: {
+		infinityInterval: boolean;
+		triggeringQuantity: number;
+		remainingTriggers: number;
+	};
+	created: Date;
+	nextExecute: Date;
 	source(): Promise<unknown> | unknown;
 }

@@ -1,4 +1,5 @@
-import SchedulerTasks from "./tasks";
+import SchedulerTasks from "./tasks/core";
+import SchedulerLogger from "./logger/core";
 
 import { ISchedulerConfig } from "./../types/scheduler";
 
@@ -10,6 +11,7 @@ class Scheduler {
 	};
 
 	public tasks = new SchedulerTasks();
+	public logger = new SchedulerLogger();
 }
 
 const scheduler = new Scheduler();
