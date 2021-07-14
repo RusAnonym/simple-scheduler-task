@@ -1,4 +1,4 @@
-export type TSchedulerTaskStatus = "await" | "executed" | "pause" | "done";
+export type TSchedulerTaskStatus = "await" | "process" | "pause" | "done";
 
 export interface ISchedulerInputTask {
 	plannedTime?: Date | number;
