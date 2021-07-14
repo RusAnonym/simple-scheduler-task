@@ -3,13 +3,34 @@ import { performance } from "perf_hooks";
 
 import scheduler from "../core";
 
-import { ISchedulerTaskInfo, IParseTask } from "./../../types/tasks";
+import {
+	ISchedulerTaskInfo,
+	IParseTask,
+	ISchedulerInputTask,
+} from "./../../types/tasks";
 
 class SchedulerTask {
 	public _task: ISchedulerTaskInfo;
 
-	constructor(task: ISchedulerTaskInfo) {
-		this._task = task;
+	constructor(task: ISchedulerInputTask) {
+		const newTask: ISchedulerTaskInfo = {
+			...task,
+			id: scheduler.tasks.generateID(),
+			status: "await",
+			timeout:
+				scheduler.config.mode === "timeout"
+					? setTimeout(() => {
+							this.execute();
+					  }, task.plannedTime - Date.now())
+					: null,
+			created: new Date(),
+			interval: {
+				isInfinity: task.interval.remainingTriggers === Infinity,
+				triggeringQuantity: 0,
+				...task.interval,
+			},
+		};
+		this._task = newTask;
 		scheduler.tasks.list.push(this);
 	}
 
@@ -107,12 +128,11 @@ class SchedulerTask {
 					}, this._task.plannedTime - Date.now());
 				} else {
 					const taskIndex = scheduler.tasks.list.findIndex(
-						(x) => x._task.id === this._task.id,
+						(x) => x.id === this.id,
 					);
 					let newTaskIndex = scheduler.tasks.list.findIndex(
 						(x) =>
-							x._task.plannedTime >= this._task.plannedTime &&
-							x._task.id !== this._task.id,
+							x._task.plannedTime >= this._task.plannedTime && x.id !== this.id,
 					);
 					newTaskIndex + 1 !== scheduler.tasks.list.length && newTaskIndex > 0
 						? --newTaskIndex
@@ -133,9 +153,13 @@ class SchedulerTask {
 		return;
 	}
 
+	public get id(): string {
+		return this._task.id;
+	}
+
 	public get info(): IParseTask {
 		return {
-			id: this._task.id,
+			id: this.id,
 			type: this._task.type,
 			params: this._task.params,
 			status: this._task.status,
@@ -174,7 +198,7 @@ class SchedulerTasks {
 			ID +=
 				this.allowedWords[Math.floor(Math.random() * this.allowedWords.length)];
 		}
-		if (!this.list.find((x) => x._task.id === ID)) {
+		if (!this.list.find((x) => x.id === ID)) {
 			return ID;
 		} else {
 			return this.generateID();

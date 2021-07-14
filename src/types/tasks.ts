@@ -1,36 +1,44 @@
 export type TSchedulerTaskStatus = "await" | "process" | "pause" | "done";
 
+// export interface ISchedulerInputTask {
+// 	plannedTime?: Date | number;
+// 	type?: string;
+// 	params?: Record<string, unknown>;
+// 	inform?: boolean;
+// 	intervalTimer?: number;
+// 	intervalTriggers?: number;
+// 	isInterval?: boolean;
+// 	source(): Promise<unknown> | unknown;
+// }
+
+interface ISchedulerInputTaskInterval {
+	is: boolean;
+	time: number;
+	isNextExecutionAfterDone: boolean;
+	remainingTriggers: number;
+}
+
 export interface ISchedulerInputTask {
-	plannedTime?: Date | number;
-	type?: string;
-	params?: Record<string, unknown>;
-	inform?: boolean;
-	intervalTimer?: number;
-	intervalTriggers?: number;
-	isInterval?: boolean;
+	plannedTime: number;
+	type: string;
+	params: Record<string, unknown>;
+	isInform: boolean;
+	isHidden: boolean;
+	interval: ISchedulerInputTaskInterval;
 	source(): Promise<unknown> | unknown;
 }
 
-export interface ISchedulerTaskInfo {
-	plannedTime: number;
-	id: string;
-	type: string;
-	params: Record<string, unknown>;
-	status: TSchedulerTaskStatus;
-	created: Date;
-	isInform: boolean;
-	isHidden: boolean;
-	timeout: NodeJS.Timer | null;
-	interval: {
-		is: boolean;
-		time: number;
-		isNextExecutionAfterDone: boolean;
-		isInfinity: boolean;
-		triggeringQuantity: number;
-		remainingTriggers: number;
-	};
+interface ISchedulerTaskInfoInterval extends ISchedulerInputTaskInterval {
+	isInfinity: boolean;
+	triggeringQuantity: number;
+}
 
-	source(): Promise<unknown> | unknown;
+export interface ISchedulerTaskInfo extends ISchedulerInputTask {
+	id: string;
+	status: TSchedulerTaskStatus;
+	timeout: NodeJS.Timer | null;
+	created: Date;
+	interval: ISchedulerTaskInfoInterval;
 }
 
 export interface IParseTask {
