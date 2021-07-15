@@ -25,9 +25,10 @@ class SchedulerTask {
 					: null,
 			created: new Date(),
 			interval: {
-				isInfinity: task.interval.remainingTriggers === Infinity,
-				triggeringQuantity: 0,
 				...task.interval,
+				isInfinity:
+					task.interval.is && task.interval.remainingTriggers === Infinity,
+				triggeringQuantity: 0,
 			},
 		};
 		this._task = newTask;

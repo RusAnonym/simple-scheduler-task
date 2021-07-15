@@ -1,6 +1,6 @@
 import scheduler from "./lib/core";
-import { SchedulerTask } from "./lib/tasks/core";
+import Task from "./lib/tasks/plugins/Task";
 
 export default scheduler;
 
-export { SchedulerTask };
+export { Task };
