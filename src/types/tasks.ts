@@ -1,3 +1,5 @@
+import { ISchedulerLogDone, ISchedulerLogError } from "./logs";
+
 export type TSchedulerTaskStatus = "await" | "process" | "pause" | "done";
 
 export interface IInputTask {
@@ -10,6 +12,8 @@ export interface IInputTask {
 	isInterval?: boolean;
 	isNextExecutionAfterDone?: boolean;
 	source(): Promise<unknown> | unknown;
+	onDone?(log: ISchedulerLogDone): unknown;
+	onError?(log: ISchedulerLogError): unknown;
 }
 
 interface ISchedulerInputTaskInterval {
@@ -27,6 +31,8 @@ export interface ISchedulerInputTask {
 	isHidden: boolean;
 	interval: ISchedulerInputTaskInterval;
 	source(): Promise<unknown> | unknown;
+	onDone: ((log: ISchedulerLogDone) => unknown) | null;
+	onError: ((log: ISchedulerLogError) => unknown) | null;
 }
 
 interface ISchedulerTaskInfoInterval extends ISchedulerInputTaskInterval {

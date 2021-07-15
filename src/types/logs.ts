@@ -8,7 +8,7 @@ export interface ISchedulerLogError {
 	executionTime: number;
 }
 
-export interface ISchedulerLogInform {
+export interface ISchedulerLogDone {
 	task: IParseTask;
 	response: unknown;
 	executionTime: number;

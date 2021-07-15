@@ -6,16 +6,21 @@ class Task {
 	private task: SchedulerTask;
 
 	constructor(params: IInputTask) {
-		let { plannedTime = 0 } = params;
+		let { plannedTime = 0, intervalTimer = 0 } = params;
 		const {
 			type = "missing",
 			inform = false,
 			isInterval = false,
-			intervalTimer = 0,
 			intervalTriggers = Infinity,
 			isNextExecutionAfterDone = false,
+			onDone = null,
+			onError = null,
 			source,
 		} = params;
+
+		if (isInterval && plannedTime === 0 && intervalTimer > 0) {
+			plannedTime = Number(new Date()) + intervalTimer;
+		}
 
 		if (
 			!source ||
@@ -25,8 +30,8 @@ class Task {
 			throw new Error("One of the required parameters is missing or incorrect");
 		}
 
-		if (isInterval && plannedTime === 0) {
-			plannedTime = Number(new Date()) + intervalTimer;
+		if (isInterval && intervalTimer === 0) {
+			intervalTimer = Number(plannedTime) - Date.now();
 		}
 
 		this.task = new SchedulerTask({
@@ -36,6 +41,8 @@ class Task {
 			isHidden: false,
 			isInform: inform,
 			source,
+			onDone,
+			onError,
 			interval: {
 				is: isInterval,
 				time: intervalTimer,

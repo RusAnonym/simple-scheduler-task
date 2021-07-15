@@ -1,3 +1,4 @@
+import { ISchedulerLogError, ISchedulerLogDone } from "./../../types/logs";
 /* eslint-disable no-unsafe-finally */
 import { performance } from "perf_hooks";
 
@@ -11,7 +12,10 @@ import {
 } from "./../../types/tasks";
 
 class SchedulerTask {
-	public _task: ISchedulerTaskInfo;
+	private _task: ISchedulerTaskInfo;
+
+	public onErrorHandler: ((log: ISchedulerLogError) => unknown) | null;
+	public onDoneHandler: ((log: ISchedulerLogDone) => unknown) | null;
 
 	constructor(task: ISchedulerInputTask) {
 		const newTask: ISchedulerTaskInfo = {
@@ -33,6 +37,8 @@ class SchedulerTask {
 			},
 		};
 		this._task = newTask;
+		this.onDoneHandler = task.onDone || null;
+		this.onErrorHandler = task.onError || null;
 		scheduler.tasks.list.push(this);
 	}
 
@@ -59,17 +65,23 @@ class SchedulerTask {
 					this._task.plannedTime = Date.now() + this._task.interval.time;
 				}
 			}
-			if (this._task.isInform) {
-				if (
-					this._task.interval.is &&
-					this._task.interval.remainingTriggers > 0
-				) {
-					this._task.status = "await";
-				} else {
-					this._task.status = "done";
-				}
 
+			if (this._task.interval.is && this._task.interval.remainingTriggers > 0) {
+				this._task.status = "await";
+			} else {
+				this._task.status = "done";
+			}
+
+			if (this._task.isInform) {
 				scheduler.logger.emit("done", {
+					response,
+					executionTime: endExecute - startExecute,
+					task: this.info,
+				});
+			}
+
+			if (this.onDoneHandler) {
+				this.onDoneHandler({
 					response,
 					executionTime: endExecute - startExecute,
 					task: this.info,
@@ -77,6 +89,7 @@ class SchedulerTask {
 			}
 		} catch (error) {
 			const endExecute = performance.now();
+
 			if (this._task.interval.is) {
 				++this._task.interval.triggeringQuantity;
 				if (!this._task.interval.isInfinity) {
@@ -86,64 +99,53 @@ class SchedulerTask {
 					this._task.plannedTime = Date.now() + this._task.interval.time;
 				}
 			}
-			if (this._task.isInform) {
-				if (
-					this._task.interval.is &&
-					this._task.interval.remainingTriggers > 0
-				) {
-					this._task.status = "await";
-				} else {
-					this._task.status = "done";
-				}
-			}
-			if (this._task.isInform) {
-				if (
-					this._task.interval.is &&
-					this._task.interval.remainingTriggers > 0
-				) {
-					this._task.status = "await";
-				} else {
-					this._task.status = "done";
-				}
 
+			if (this._task.interval.is && this._task.interval.remainingTriggers > 0) {
+				this._task.status = "await";
+			} else {
+				this._task.status = "done";
+			}
+
+			if (this._task.isInform) {
 				scheduler.logger.emit("error", {
 					error,
 					executionTime: endExecute - startExecute,
 					task: this.info,
 				});
 			}
+
+			if (this.onErrorHandler) {
+				this.onErrorHandler({
+					error,
+					executionTime: endExecute - startExecute,
+					task: this.info,
+				});
+			}
 		} finally {
-			if (this._task.interval.is) {
-				if (!this._task.interval.isInfinity) {
-					if (this._task.interval.remainingTriggers <= 0) {
-						this.remove();
-						return;
-					}
-				}
-				if (!this._task.isInform) {
-					this._task.status = "await";
-					++this._task.interval.triggeringQuantity;
-				}
-				if (scheduler.config.mode === "timeout") {
-					this._task.timeout = setTimeout(() => {
-						this.execute();
-					}, this._task.plannedTime - Date.now());
-				} else {
-					const taskIndex = scheduler.tasks.list.findIndex(
-						(x) => x.id === this.id,
-					);
-					let newTaskIndex = scheduler.tasks.list.findIndex(
-						(x) =>
-							x._task.plannedTime >= this._task.plannedTime && x.id !== this.id,
-					);
-					newTaskIndex + 1 !== scheduler.tasks.list.length && newTaskIndex > 0
-						? --newTaskIndex
-						: null;
-					scheduler.tasks.move(taskIndex, newTaskIndex);
-				}
-			} else {
+			if (this.status === "done") {
 				this.remove();
 				return;
+			}
+
+			if (scheduler.config.mode === "timeout") {
+				this._task.timeout = setTimeout(() => {
+					this.execute();
+				}, this._task.plannedTime - Date.now());
+			} else {
+				const taskIndex = scheduler.tasks.list.findIndex(
+					(x) => x.id === this.id,
+				);
+				let newTaskIndex = scheduler.tasks.list.findIndex(
+					(x) =>
+						x._task.plannedTime >= this._task.plannedTime && x.id !== this.id,
+				);
+				if (
+					newTaskIndex + 1 !== scheduler.tasks.list.length &&
+					newTaskIndex > 0
+				) {
+					--newTaskIndex;
+				}
+				scheduler.tasks.move(taskIndex, newTaskIndex);
 			}
 		}
 		return;
