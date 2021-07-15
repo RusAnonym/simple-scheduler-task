@@ -1,3 +1,5 @@
 node_modules/
 dist/
-test.js
+test.*
+yarn-error.log
+yarn.lock

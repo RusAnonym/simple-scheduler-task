@@ -1,20 +1,20 @@
-import * as core from "./lib/core";
+import scheduler from "./lib/core";
 
-import { Interval, Task, Timeout } from "./lib/api/tasks";
+import Task from "./lib/tasks/plugins/Task";
+import Timeout from "./lib/tasks/plugins/Timeout";
+import Interval from "./lib/tasks/plugins/Interval";
 
-/**
- * Scheduler settings
- */
-const settings = core.settings;
+class Core {
+	public Task = Task;
+	public Timeout = Timeout;
+	public Interval = Interval;
 
-/**
- * Tasks API
- */
-const tasks = core.TasksAPI;
+	public events = scheduler.logger;
+	public settings = scheduler.settings;
+}
 
-/**
- * Events
- */
-const events = core.Events;
+scheduler.settings.useInterval();
 
-export { settings, tasks, events, Task, Timeout, Interval };
+export default new Core();
+
+export { Task, Timeout, Interval };
