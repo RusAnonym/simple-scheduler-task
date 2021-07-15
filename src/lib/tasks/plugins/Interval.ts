@@ -1,27 +1,30 @@
 import { ISchedulerLogDone, ISchedulerLogError } from "../../../types/logs";
 import Task from "./Task";
 
-export interface TimeoutParams {
+export interface IntervalParams {
 	plannedTime: Date | number;
 	type?: string;
 	params?: Record<string, unknown>;
 	isInform?: boolean;
+	intervalTimer?: number;
+	intervalTriggers?: number;
+	isNextExecutionAfterDone?: boolean;
 	source(): Promise<unknown> | unknown;
 	onDone?(log: ISchedulerLogDone): unknown;
 	onError?(log: ISchedulerLogError): unknown;
 }
 
-class Timeout extends Task {
-	constructor(params: TimeoutParams);
+class Interval extends Task {
+	constructor(params: IntervalParams);
 	constructor(
 		func: () => Promise<unknown> | unknown,
 		ms: number,
-		params?: TimeoutParams,
+		params?: IntervalParams,
 	);
 	constructor(
-		paramsOrFunction: TimeoutParams | (() => Promise<unknown> | unknown),
+		paramsOrFunction: IntervalParams | (() => Promise<unknown> | unknown),
 		ms?: number,
-		additionalParams?: TimeoutParams,
+		additionalParams?: IntervalParams,
 	) {
 		if (typeof paramsOrFunction === "function") {
 			if (!paramsOrFunction && !ms) {
@@ -30,14 +33,18 @@ class Timeout extends Task {
 				);
 			}
 			super({
+				isInterval: true,
 				source: paramsOrFunction,
 				plannedTime: Date.now() + Number(ms),
 				...additionalParams,
 			});
 		} else {
-			super(paramsOrFunction);
+			super({
+				isInterval: true,
+				...paramsOrFunction,
+			});
 		}
 	}
 }
 
-export default Timeout;
+export default Interval;
