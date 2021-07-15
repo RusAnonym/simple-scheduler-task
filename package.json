@@ -14,10 +14,8 @@
 	},
 	"scripts": {
 		"build": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json",
-		"test": "yarn build && node test.js",
 		"lint": "eslint ./src --ext .ts",
-		"docs": "jsdoc -c jsdoc.json",
-		"prepublish": "yarn build && yarn docs"
+		"docs": "jsdoc -c jsdoc.json"
 	},
 	"files": [
 		"dist/"
@@ -27,21 +25,23 @@
 		"scheduler",
 		"task",
 		"job",
-		"in-memory"
+		"in-memory",
+		"cron"
 	],
 	"devDependencies": {
 		"@types/events": "^3.0.0",
-		"@types/node": "^14.11.8",
-		"@typescript-eslint/eslint-plugin": "^4.15.1",
-		"@typescript-eslint/parser": "^4.15.1",
+		"@types/node": "^16.3.2",
+		"@typescript-eslint/eslint-plugin": "^4.28.3",
+		"@typescript-eslint/parser": "^4.28.3",
 		"better-docs": "^2.3.2",
-		"eslint": "^7.20.0",
+		"eslint": "^7.30.0",
 		"global": "^4.4.0",
-		"jsdoc": "^3.6.6",
-		"typescript": "^4.0.3"
+		"jsdoc": "^3.6.7",
+		"typescript": "^4.3.5"
 	},
 	"dependencies": {
-		"events": "^3.2.0",
+		"cron-parser": "^3.5.0",
+		"events": "^3.3.0",
 		"fs": "^0.0.1-security",
 		"path": "^0.12.7",
 		"perf_hooks": "^0.0.1"

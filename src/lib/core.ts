@@ -1,23 +1,21 @@
-import Tasks from "./tasks";
-import Utils from "./utils";
-import Settings from "./settings";
-import Logger from "./logger";
+import SchedulerTasks from "./tasks/core";
+import SchedulerLogger from "./logger/core";
+import SchedulerSettings from "./settings/core";
 
-class SchedulerCore {
-	public tasks = new Tasks();
-	public utils = new Utils();
-	public settings = new Settings();
-	public logger = new Logger();
+import { ISchedulerConfig } from "./../types/scheduler";
 
-	public config: {
-		mode: "timeout" | "interval" | "not_work";
-		interval: NodeJS.Timer | null;
-		intervalMS: number;
-	} = {
+class Scheduler {
+	public config: ISchedulerConfig = {
 		mode: "not_work",
 		interval: null,
 		intervalMS: 1000,
 	};
+
+	public tasks = new SchedulerTasks();
+	public logger = new SchedulerLogger();
+	public settings = new SchedulerSettings();
 }
 
-export default new SchedulerCore();
+const scheduler = new Scheduler();
+
+export default scheduler;
