@@ -1,11 +1,13 @@
+import { IParseTask } from "./../../../types/tasks";
 import { SchedulerTask } from "../core";
 
-import { IInputTask } from "../../../types/tasks";
+import { InputTask } from "../../../types/tasks";
+import { ISchedulerLogDone, ISchedulerLogError } from "../../../types/logs";
 
 class Task {
 	private task: SchedulerTask;
 
-	constructor(params: IInputTask) {
+	constructor(params: InputTask) {
 		let { plannedTime = 0, intervalTimer = 0 } = params;
 		const {
 			type = "missing",
@@ -50,6 +52,50 @@ class Task {
 				isNextExecutionAfterDone,
 			},
 		});
+	}
+
+	public cancel(): void {
+		this.task.remove();
+	}
+
+	public pause(): void {
+		this.task._task.status = "pause";
+	}
+
+	public unpause(): void {
+		this.task._task.status = "await";
+	}
+
+	public execute(): Promise<void> {
+		return this.task.execute();
+	}
+
+	public get info(): IParseTask {
+		return this.task.info;
+	}
+
+	public get nextExecute(): Date {
+		return new Date(this.task.plannedTime);
+	}
+
+	public set nextExecute(date: number | Date) {
+		this.task._task.plannedTime = Number(date);
+	}
+
+	public get isInform(): boolean {
+		return this.task._task.isInform;
+	}
+
+	public set isInform(status: boolean) {
+		this.task._task.isInform = status;
+	}
+
+	public set onDone(callback: (log: ISchedulerLogDone) => unknown) {
+		this.task.onDoneHandler = callback;
+	}
+
+	public set onError(callback: (log: ISchedulerLogError) => unknown) {
+		this.task.onErrorHandler = callback;
 	}
 }
 

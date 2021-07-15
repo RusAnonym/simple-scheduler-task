@@ -12,7 +12,7 @@ import {
 } from "./../../types/tasks";
 
 class SchedulerTask {
-	private _task: ISchedulerTaskInfo;
+	public _task: ISchedulerTaskInfo;
 
 	public onErrorHandler: ((log: ISchedulerLogError) => unknown) | null;
 	public onDoneHandler: ((log: ISchedulerLogDone) => unknown) | null;

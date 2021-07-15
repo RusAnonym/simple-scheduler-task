@@ -2,7 +2,7 @@ import { ISchedulerLogDone, ISchedulerLogError } from "./logs";
 
 export type TSchedulerTaskStatus = "await" | "process" | "pause" | "done";
 
-export interface IInputTask {
+export interface InputTask {
 	plannedTime?: Date | number;
 	type?: string;
 	params?: Record<string, unknown>;
