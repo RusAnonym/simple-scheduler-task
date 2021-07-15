@@ -1,6 +1,8 @@
-import { IParseTask } from "./../../../types/tasks";
+import cronParser from "cron-parser";
+
 import { SchedulerTask } from "../core";
 
+import { IParseTask } from "./../../../types/tasks";
 import { ISchedulerLogDone, ISchedulerLogError } from "../../../types/logs";
 
 export interface TaskParams {
@@ -12,6 +14,7 @@ export interface TaskParams {
 	intervalTriggers?: number;
 	isInterval?: boolean;
 	isNextExecutionAfterDone?: boolean;
+	cron?: string;
 	source(): Promise<unknown> | unknown;
 	onDone?(log: ISchedulerLogDone): unknown;
 	onError?(log: ISchedulerLogError): unknown;
@@ -28,10 +31,20 @@ class Task {
 			isInterval = false,
 			intervalTriggers = Infinity,
 			isNextExecutionAfterDone = false,
+			cron = null,
 			onDone = null,
 			onError = null,
 			source,
 		} = params;
+
+		if (cron && plannedTime === 0) {
+			try {
+				const interval = cronParser.parseExpression(cron);
+				plannedTime = Number(interval.next().toDate());
+			} catch (error) {
+				throw new Error("CRON expression is invalid");
+			}
+		}
 
 		if (isInterval && plannedTime === 0 && intervalTimer > 0) {
 			plannedTime = Number(new Date()) + intervalTimer;
@@ -45,7 +58,7 @@ class Task {
 			throw new Error("One of the required parameters is missing or incorrect");
 		}
 
-		if (isInterval && intervalTimer === 0) {
+		if (isInterval && intervalTimer === 0 && !cron) {
 			intervalTimer = Number(plannedTime) - Date.now();
 		}
 
@@ -55,6 +68,7 @@ class Task {
 			params: params.params || {},
 			isHidden: false,
 			isInform,
+			cron,
 			source,
 			onDone,
 			onError,

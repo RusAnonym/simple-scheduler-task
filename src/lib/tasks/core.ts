@@ -1,5 +1,6 @@
-import { ISchedulerLogError, ISchedulerLogDone } from "./../../types/logs";
 /* eslint-disable no-unsafe-finally */
+import cronParser from "cron-parser";
+
 import { performance } from "perf_hooks";
 
 import scheduler from "../core";
@@ -10,6 +11,7 @@ import {
 	ISchedulerInputTask,
 	TSchedulerTaskStatus,
 } from "./../../types/tasks";
+import { ISchedulerLogError, ISchedulerLogDone } from "./../../types/logs";
 
 class SchedulerTask {
 	public _task: ISchedulerTaskInfo;
@@ -48,7 +50,16 @@ class SchedulerTask {
 			this._task.interval.is &&
 			!this._task.interval.isNextExecutionAfterDone
 		) {
-			this._task.plannedTime = Date.now() + this._task.interval.time;
+			if (this._task.cron) {
+				try {
+					const interval = cronParser.parseExpression(this._task.cron);
+					this._task.plannedTime = Number(interval.next().toDate());
+				} catch (error) {
+					this._task.status = "done";
+				}
+			} else {
+				this._task.plannedTime = Date.now() + this._task.interval.time;
+			}
 		}
 
 		const startExecute = performance.now();
@@ -62,11 +73,24 @@ class SchedulerTask {
 					--this._task.interval.remainingTriggers;
 				}
 				if (this._task.interval.isNextExecutionAfterDone) {
-					this._task.plannedTime = Date.now() + this._task.interval.time;
+					if (this._task.cron) {
+						try {
+							const interval = cronParser.parseExpression(this._task.cron);
+							this._task.plannedTime = Number(interval.next().toDate());
+						} catch (error) {
+							this._task.status = "done";
+						}
+					} else {
+						this._task.plannedTime = Date.now() + this._task.interval.time;
+					}
 				}
 			}
 
-			if (this._task.interval.is && this._task.interval.remainingTriggers > 0) {
+			if (
+				this._task.interval.is &&
+				this._task.interval.remainingTriggers > 0 &&
+				this.status === "process"
+			) {
 				this._task.status = "await";
 			} else {
 				this._task.status = "done";
@@ -96,11 +120,24 @@ class SchedulerTask {
 					--this._task.interval.remainingTriggers;
 				}
 				if (this._task.interval.isNextExecutionAfterDone) {
-					this._task.plannedTime = Date.now() + this._task.interval.time;
+					if (this._task.cron) {
+						try {
+							const interval = cronParser.parseExpression(this._task.cron);
+							this._task.plannedTime = Number(interval.next().toDate());
+						} catch (error) {
+							this._task.status = "done";
+						}
+					} else {
+						this._task.plannedTime = Date.now() + this._task.interval.time;
+					}
 				}
 			}
 
-			if (this._task.interval.is && this._task.interval.remainingTriggers > 0) {
+			if (
+				this._task.interval.is &&
+				this._task.interval.remainingTriggers > 0 &&
+				this.status === "process"
+			) {
 				this._task.status = "await";
 			} else {
 				this._task.status = "done";

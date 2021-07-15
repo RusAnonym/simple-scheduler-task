@@ -9,6 +9,8 @@ class Core {
 	public Timeout = Timeout;
 	public Interval = Interval;
 
+	public core = scheduler.tasks;
+
 	public events = scheduler.logger;
 	public settings = scheduler.settings;
 }

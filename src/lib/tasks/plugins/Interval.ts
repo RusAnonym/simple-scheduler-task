@@ -1,10 +1,12 @@
-import { ISchedulerLogDone, ISchedulerLogError } from "../../../types/logs";
 import Task from "./Task";
 
+import { ISchedulerLogDone, ISchedulerLogError } from "../../../types/logs";
+
 export interface IntervalParams {
-	plannedTime: Date | number;
+	plannedTime?: Date | number;
 	type?: string;
 	params?: Record<string, unknown>;
+	cron?: string;
 	isInform?: boolean;
 	intervalTimer?: number;
 	intervalTriggers?: number;
@@ -27,11 +29,6 @@ class Interval extends Task {
 		additionalParams?: IntervalParams,
 	) {
 		if (typeof paramsOrFunction === "function") {
-			if (!paramsOrFunction && !ms) {
-				throw new Error(
-					"One of the required parameters is missing or incorrect",
-				);
-			}
 			super({
 				isInterval: true,
 				source: paramsOrFunction,

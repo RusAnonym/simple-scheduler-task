@@ -15,6 +15,7 @@ export interface ISchedulerInputTask {
 	params: Record<string, unknown>;
 	isInform: boolean;
 	isHidden: boolean;
+	cron: string | null;
 	interval: ISchedulerInputTaskInterval;
 	source(): Promise<unknown> | unknown;
 	onDone: ((log: ISchedulerLogDone) => unknown) | null;
