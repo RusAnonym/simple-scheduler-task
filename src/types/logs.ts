@@ -1,6 +1,6 @@
 import { IParseTask } from "./tasks";
 
-export type TSchedulerLog = string;
+export type TSchedulerLog = "done" | "error";
 
 export interface ISchedulerLogError {
 	task: IParseTask;
