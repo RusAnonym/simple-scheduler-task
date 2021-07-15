@@ -7,6 +7,7 @@ import {
 	ISchedulerTaskInfo,
 	IParseTask,
 	ISchedulerInputTask,
+	TSchedulerTaskStatus,
 } from "./../../types/tasks";
 
 class SchedulerTask {
@@ -176,6 +177,10 @@ class SchedulerTask {
 		return this._task.plannedTime;
 	}
 
+	public get status(): TSchedulerTaskStatus {
+		return this._task.status;
+	}
+
 	public get info(): IParseTask {
 		return {
 			id: this.id,
@@ -208,6 +213,26 @@ class SchedulerTasks {
 		while (i--) {
 			this.list[i].useTimeout();
 		}
+	}
+
+	public executeOutdatedTasks(): void {
+		const now = Number(new Date());
+		const maximalIndex = this.list.findIndex((x) => x.plannedTime > now);
+		if (maximalIndex === -1) {
+			this.list.map((task) => {
+				if (now >= task.plannedTime && task.status === "await") {
+					task.execute();
+				}
+			});
+		} else {
+			for (let index = 0; index < maximalIndex; ++index) {
+				const task = this.list[index];
+				if (task.status === "await" && now >= task.plannedTime) {
+					task.execute();
+				}
+			}
+		}
+		return;
 	}
 
 	public insert(index: number, task: SchedulerTask): void {
