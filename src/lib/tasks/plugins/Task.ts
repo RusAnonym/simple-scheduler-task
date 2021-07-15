@@ -18,8 +18,8 @@ class Task {
 		} = params;
 
 		if (
-			(!isInterval && !plannedTime) ||
 			!source ||
+			(!isInterval && intervalTimer === 0 && plannedTime === 0) ||
 			new Date(plannedTime).toString() === "Invalid Date"
 		) {
 			throw new Error("One of the required parameters is missing or incorrect");
