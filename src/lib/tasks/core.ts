@@ -154,8 +154,26 @@ class SchedulerTask {
 		return;
 	}
 
+	public clearTimeout(): void {
+		if (this._task.timeout !== null) {
+			clearTimeout(this._task.timeout);
+		}
+	}
+
+	public useTimeout(): void {
+		if (this._task.timeout === null) {
+			this._task.timeout = setTimeout(() => {
+				this.execute();
+			}, this.plannedTime - Date.now());
+		}
+	}
+
 	public get id(): string {
 		return this._task.id;
+	}
+
+	public get plannedTime(): number {
+		return this._task.plannedTime;
 	}
 
 	public get info(): IParseTask {
@@ -177,6 +195,20 @@ class SchedulerTasks {
 	private allowedWords = `defbca123456890`.split("");
 
 	public list: SchedulerTask[] = [];
+
+	public clearTimeouts(): void {
+		let i = this.list.length;
+		while (i--) {
+			this.list[i].clearTimeout();
+		}
+	}
+
+	public setTimeouts(): void {
+		let i = this.list.length;
+		while (i--) {
+			this.list[i].useTimeout();
+		}
+	}
 
 	public insert(index: number, task: SchedulerTask): void {
 		this.list.splice(index, 0, task);
