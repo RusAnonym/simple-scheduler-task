@@ -9,6 +9,7 @@ class SchedulerSettings {
 			scheduler.tasks.clearTimeouts();
 			scheduler.config.interval = setInterval(() => {
 				scheduler.tasks.executeOutdatedTasks();
+				scheduler.tasks.sort();
 			}, scheduler.config.intervalMS);
 			return;
 		}

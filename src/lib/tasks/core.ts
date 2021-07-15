@@ -237,6 +237,18 @@ class SchedulerTasks {
 		return;
 	}
 
+	public sort(): void {
+		this.list.sort((a, b) => {
+			if (a.plannedTime > b.plannedTime) {
+				return 1;
+			}
+			if (a.plannedTime < b.plannedTime) {
+				return -1;
+			}
+			return 0;
+		});
+	}
+
 	public insert(index: number, task: SchedulerTask): void {
 		this.list.splice(index, 0, task);
 		return;
