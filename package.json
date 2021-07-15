@@ -1,6 +1,6 @@
 {
 	"name": "simple-scheduler-task",
-	"version": "3.2.3",
+	"version": "4.0.0",
 	"description": "Simple module for easy work with task scheduling",
 	"main": "./dist/cjs/main.js",
 	"module": "./dist/main.js",
