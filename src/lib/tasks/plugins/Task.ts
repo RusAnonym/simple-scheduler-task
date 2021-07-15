@@ -1,17 +1,30 @@
 import { IParseTask } from "./../../../types/tasks";
 import { SchedulerTask } from "../core";
 
-import { InputTask } from "../../../types/tasks";
 import { ISchedulerLogDone, ISchedulerLogError } from "../../../types/logs";
+
+export interface TaskParams {
+	plannedTime?: Date | number;
+	type?: string;
+	params?: Record<string, unknown>;
+	isInform?: boolean;
+	intervalTimer?: number;
+	intervalTriggers?: number;
+	isInterval?: boolean;
+	isNextExecutionAfterDone?: boolean;
+	source(): Promise<unknown> | unknown;
+	onDone?(log: ISchedulerLogDone): unknown;
+	onError?(log: ISchedulerLogError): unknown;
+}
 
 class Task {
 	private task: SchedulerTask;
 
-	constructor(params: InputTask) {
+	constructor(params: TaskParams) {
 		let { plannedTime = 0, intervalTimer = 0 } = params;
 		const {
 			type = "missing",
-			inform = false,
+			isInform = false,
 			isInterval = false,
 			intervalTriggers = Infinity,
 			isNextExecutionAfterDone = false,
@@ -41,7 +54,7 @@ class Task {
 			type,
 			params: params.params || {},
 			isHidden: false,
-			isInform: inform,
+			isInform,
 			source,
 			onDone,
 			onError,
@@ -78,7 +91,7 @@ class Task {
 		return new Date(this.task.plannedTime);
 	}
 
-	public set nextExecute(date: number | Date) {
+	public set nextExecute(date: Date) {
 		this.task._task.plannedTime = Number(date);
 	}
 

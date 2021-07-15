@@ -2,20 +2,6 @@ import { ISchedulerLogDone, ISchedulerLogError } from "./logs";
 
 export type TSchedulerTaskStatus = "await" | "process" | "pause" | "done";
 
-export interface InputTask {
-	plannedTime?: Date | number;
-	type?: string;
-	params?: Record<string, unknown>;
-	inform?: boolean;
-	intervalTimer?: number;
-	intervalTriggers?: number;
-	isInterval?: boolean;
-	isNextExecutionAfterDone?: boolean;
-	source(): Promise<unknown> | unknown;
-	onDone?(log: ISchedulerLogDone): unknown;
-	onError?(log: ISchedulerLogError): unknown;
-}
-
 interface ISchedulerInputTaskInterval {
 	is: boolean;
 	time: number;
